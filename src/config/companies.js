@@ -3,7 +3,8 @@ const defaults = {
   loginButtonText: 'Access Order',
   loginIntroduction: 'View your order details and use the secure document portal to upload any supporting documents we require.',
   logoUrl: null,
-  logoAlt: ''
+  logoAlt: '',
+  faviconUrl: '/favicon.svg'
 }
 
 const localDefaultsModules = import.meta.glob('../../config/defaults.js', {

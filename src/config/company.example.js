@@ -4,5 +4,6 @@ export default {
   loginButtonText: 'View My Order',
   loginIntroduction: 'Enter your order details to securely upload your supporting documents.',
   logoUrl: '/company-assets/example-plates.svg',
-  logoAlt: 'Example Plates'
+  logoAlt: 'Example Plates',
+  faviconUrl: '/company-assets/example-favicon.svg'
 }

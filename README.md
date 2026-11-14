@@ -59,13 +59,16 @@ export default {
   loginButtonText: 'View My Order',
   loginIntroduction: 'Enter your order details to securely upload your supporting documents.',
   logoUrl: '/company-assets/example-plates.svg',
-  logoAlt: 'Example Plates'
+  logoAlt: 'Example Plates',
+  faviconUrl: '/company-assets/example-favicon.svg'
 }
 ```
 
 All fields are optional. Companies without configuration use the defaults, including no logo. `loginButtonText` defaults to `Access Order`; the loading label remains `Accessing Order…`. Logos appear on both the login and order pages; unavailable images are hidden. Introduction text is rendered as plain text.
 
 Place company logos in the Git-ignored `public/company-assets/` directory and reference them as `/company-assets/filename.svg` (PNG and other browser-supported formats also work), or use an HTTPS image URL. Set `logoAlt` to the company name for accessibility.
+
+The app includes a default favicon at `public/favicon.svg`. Override `faviconUrl` in `config/defaults.js` for a shared installation default, or in `config/companies/<id>.js` for a company-specific favicon. Omitted values inherit the normal configuration defaults. Empty or null values use the app favicon. Store local company favicons in `public/company-assets/` and reference them as `/company-assets/filename.svg` (PNG and ICO also work), or use an HTTPS URL. The favicon updates when the company route changes, including a return to the default for unconfigured companies.
 
 Existing sample company overrides and logos have been moved into these local directories. They will not be included in new checkouts. Supply these directories separately on each development or build machine before building. Both directories are optional: a clean checkout builds using defaults alone. Keep a separate backup of your local configuration and assets.
 
@@ -89,7 +92,7 @@ Styling lives entirely in CSS. Define shared overrides in optional `config/defau
 
 The cascade applies tracked defaults from `src/style.css`, then shared local CSS, then the active company's CSS. Omitted variables inherit their defaults. Variables control primary buttons, page backgrounds, cards and input focus borders. `--portal-text-color` supplies inherited text colour; use custom CSS for elements with explicit text colours.
 
-When changing companies, the previous custom stylesheet is removed. Local CSS files are Git-ignored and included at build time. Use ordinary CSS; Tailwind directives are not processed in these files. JS configuration handles text and logos only.
+When changing companies, the previous custom stylesheet is removed. Local CSS files are Git-ignored and included at build time. Use ordinary CSS; Tailwind directives are not processed in these files. JS configuration handles text, logos and favicons.
 
 Available styling hooks include `.portal`, `.portal-page`, `.portal-login`, `.portal-login-card`, `.portal-order`, `.portal-card`, `.portal-upload-modal`, `.portal-button`, `.portal-button-primary`, `.portal-button-secondary` and `.portal-input`. Theme values are available as CSS variables such as `--portal-primary-color`. Prefix selectors with `.portal` to keep styles within the application:
 

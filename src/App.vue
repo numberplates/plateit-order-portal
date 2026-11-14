@@ -7,8 +7,18 @@
 <script setup>
 import { onBeforeUnmount, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
+import { getCompanyConfig } from './config/companies'
 
 const route = useRoute()
+const favicon = document.getElementById('portal-favicon')
+const originalFavicon = favicon?.getAttribute('href') ?? '/favicon.svg'
+watchEffect(() => {
+  if (favicon) {
+    favicon.setAttribute('href', getCompanyConfig(route.params.companyId).faviconUrl || originalFavicon)
+  }
+})
+onBeforeUnmount(() => favicon?.setAttribute('href', originalFavicon))
+
 // Only the current company's CSS is installed, avoiding cross-company styles.
 const stylesheets = import.meta.glob('../config/{defaults,companies/*}.css', {
   query: '?raw', import: 'default', eager: true
