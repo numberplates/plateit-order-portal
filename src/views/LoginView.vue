@@ -2,9 +2,10 @@
   <main class="grid min-h-screen place-items-center bg-zinc-100 px-4 py-8">
     <section class="w-full max-w-md rounded-xl border border-zinc-200 bg-white shadow-sm">
       <div class="border-b border-zinc-200 px-6 py-5">
-        <h1 class="text-2xl font-semibold text-zinc-950">Access Your Order</h1>
+        <CompanyLogo :config="companyConfig" />
+        <h1 class="text-2xl font-semibold text-zinc-950">{{ companyConfig.loginTitle }}</h1>
         <p class="mt-2 text-sm text-zinc-500">
-          View your order details and use the secure document portal to upload any supporting documents we require.
+          {{ companyConfig.loginIntroduction }}
         </p>
       </div>
 
@@ -45,7 +46,7 @@
           class="w-full rounded-lg bg-zinc-900 px-4 py-2.5 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="isLoading"
         >
-          {{ isLoading ? 'Accessing Order…' : 'Access Order' }}
+          {{ isLoading ? 'Accessing Order…' : companyConfig.loginButtonText }}
         </button>
       </form>
     </section>
@@ -57,6 +58,8 @@ import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { z } from 'zod'
 import AppAlert from '../components/AppAlert.vue'
+import CompanyLogo from '../components/CompanyLogo.vue'
+import { getCompanyConfig } from '../config/companies'
 import { apiFetch } from '../utils/apiFetch'
 import { resolveMessage } from '../utils/resolveMessage'
 import { scopedAuth } from '../stores/scopedAuth'
@@ -64,6 +67,7 @@ import { scopedAuth } from '../stores/scopedAuth'
 const route = useRoute()
 const router = useRouter()
 const companyId = Number(route.params.companyId)
+const companyConfig = getCompanyConfig(companyId)
 
 scopedAuth.clearAuth()
 

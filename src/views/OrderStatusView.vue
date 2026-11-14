@@ -19,6 +19,7 @@
         class="space-y-8"
       >
         <header>
+          <CompanyLogo :config="companyConfig" />
           <div class="flex flex-wrap items-start justify-between gap-4">
             <div>
               <div class="flex flex-wrap items-center gap-2">
@@ -119,6 +120,8 @@
 import { computed, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppAlert from '../components/AppAlert.vue'
+import CompanyLogo from '../components/CompanyLogo.vue'
+import { getCompanyConfig } from '../config/companies'
 import OrderAddressCard from '../components/OrderAddressCard.vue'
 import OrderDocuments from '../components/OrderDocuments.vue'
 import OrderNotes from '../components/OrderNotes.vue'
@@ -133,6 +136,7 @@ const route = useRoute()
 const router = useRouter()
 
 const companyId = Number(route.params.companyId)
+const companyConfig = getCompanyConfig(companyId)
 const routeOrderId = String(route.params.id)
 
 const order = ref(null)
