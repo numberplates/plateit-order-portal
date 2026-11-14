@@ -47,10 +47,11 @@
                 <button
                   v-if="row.isMissing || row.status === 'rejected'"
                   type="button"
-                  class="rounded-lg bg-zinc-900 px-3 py-2 font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  class="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-3 py-2 font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
                   :disabled="refreshing"
                   @click="openUpload(row.resource)"
                 >
+                  <ButtonIcon name="upload" />
                   {{ row.isMissing ? 'Upload' : 'Replace' }}
                 </button>
                 <span v-else class="text-zinc-400">—</span>
@@ -108,6 +109,7 @@
 </template>
 
 <script setup>
+import ButtonIcon from './ButtonIcon.vue'
 import { computed, ref } from 'vue'
 import DocumentUploadModal from './DocumentUploadModal.vue'
 import { useOrderDocuments } from '../composables/useOrderDocuments'

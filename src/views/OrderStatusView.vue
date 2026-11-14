@@ -1,6 +1,6 @@
 <template>
   <main class="min-h-screen bg-zinc-100 py-8 print:bg-white print:py-0">
-    <div class="mx-auto w-full max-w-6xl px-4 print:max-w-none print:px-0">
+    <div class="mx-auto w-full max-w-5xl px-4 print:max-w-none print:px-0">
       <div
         v-if="isInitialLoading"
         class="grid min-h-60 place-items-center"
@@ -43,9 +43,10 @@
 
             <button
               type="button"
-              class="print-hidden rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
+              class="inline-flex items-center justify-center gap-2 print-hidden rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
               @click="handlePrint"
             >
+              <ButtonIcon name="printer" />
               Print
             </button>
           </div>
@@ -105,9 +106,10 @@
         <div class="print-hidden flex justify-end border-t border-zinc-200 pt-6">
           <button
             type="button"
-            class="rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
+            class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
             @click="handleExit"
           >
+            <ButtonIcon name="exit" />
             Exit
           </button>
         </div>
@@ -117,6 +119,7 @@
 </template>
 
 <script setup>
+import ButtonIcon from '../components/ButtonIcon.vue'
 import { computed, onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppAlert from '../components/AppAlert.vue'

@@ -1,6 +1,7 @@
 <template>
   <div class="space-y-3">
     <label
+      v-if="!file"
       class="flex cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-zinc-300 bg-zinc-50 px-4 py-5 text-center transition hover:bg-zinc-100"
       @dragover.prevent
       @drop.prevent="handleDrop"
@@ -30,31 +31,43 @@
           <span class="ml-2 text-zinc-500">{{ formatFileSize(file.size) }}</span>
         </div>
 
+        <button
+          type="button"
+          class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 font-medium text-zinc-700 hover:bg-zinc-50"
+          @click="file = null"
+        >
+          <ButtonIcon name="trash" />
+          Remove file
+        </button>
+
         <div
           v-if="isImage"
           class="flex flex-wrap gap-2"
         >
           <button
             type="button"
-            class="rounded-lg border border-zinc-300 bg-white px-3 py-1.5 font-medium text-zinc-700 hover:bg-zinc-50"
+            class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 font-medium text-zinc-700 hover:bg-zinc-50"
             @click="rotate(-90)"
           >
+            <ButtonIcon name="rotate-left" />
             Rotate left
           </button>
 
           <button
             type="button"
-            class="rounded-lg border border-zinc-300 bg-white px-3 py-1.5 font-medium text-zinc-700 hover:bg-zinc-50"
+            class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 font-medium text-zinc-700 hover:bg-zinc-50"
             @click="rotate(90)"
           >
+            <ButtonIcon name="rotate-right" />
             Rotate right
           </button>
 
           <button
             type="button"
-            class="rounded-lg border border-zinc-300 bg-white px-3 py-1.5 font-medium text-zinc-700 hover:bg-zinc-50"
+            class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-1.5 font-medium text-zinc-700 hover:bg-zinc-50"
             @click="reset"
           >
+            <ButtonIcon name="reset" />
             Reset
           </button>
         </div>
@@ -90,6 +103,7 @@
 </template>
 
 <script setup>
+import ButtonIcon from './ButtonIcon.vue'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'

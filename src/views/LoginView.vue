@@ -43,9 +43,10 @@
 
         <button
           type="submit"
-          class="w-full rounded-lg bg-zinc-900 px-4 py-2.5 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+          class="inline-flex items-center justify-center gap-2 w-full rounded-lg bg-zinc-900 px-4 py-2.5 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="isLoading"
         >
+          <ButtonIcon name="arrow-right" />
           {{ isLoading ? 'Accessing Order…' : companyConfig.loginButtonText }}
         </button>
       </form>
@@ -54,6 +55,7 @@
 </template>
 
 <script setup>
+import ButtonIcon from '../components/ButtonIcon.vue'
 import { reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { z } from 'zod'
