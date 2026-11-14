@@ -1,5 +1,35 @@
 @import "tailwindcss";
 
+/* Theme rules remain in a layer so optional unlayered company CSS can override them. */
+@layer utilities {
+  .portal {
+    --portal-primary-color: #18181b;
+    --portal-primary-hover-color: #27272a;
+    --portal-primary-text-color: #ffffff;
+    --portal-page-background: #f4f4f5;
+    --portal-surface-color: #ffffff;
+    --portal-text-color: #18181b;
+    --portal-border-radius: 0.75rem;
+  }
+
+  .portal { color: var(--portal-text-color); }
+  .portal .portal-page { background: var(--portal-page-background); }
+  .portal .portal-card {
+    background: var(--portal-surface-color);
+    border-radius: var(--portal-border-radius);
+  }
+  .portal .portal-button { border-radius: var(--portal-border-radius); }
+  .portal .portal-button-primary {
+    background: var(--portal-primary-color);
+    color: var(--portal-primary-text-color);
+  }
+  .portal .portal-button-primary:hover { background: var(--portal-primary-hover-color); }
+  .portal .portal-input:focus {
+    border-color: var(--portal-primary-color);
+    outline-color: var(--portal-primary-color);
+  }
+}
+
 @media print {
   .print-hidden {
     display: none !important;

@@ -1,5 +1,5 @@
 <template>
-  <section class="rounded-xl border border-zinc-200 bg-white shadow-sm">
+  <section class="portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
     <div class="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <div class="flex flex-wrap items-center gap-2">

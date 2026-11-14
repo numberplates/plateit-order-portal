@@ -1,5 +1,5 @@
 <template>
-  <section class="rounded-xl border border-zinc-200 bg-white shadow-sm">
+  <section class="portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
     <div class="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h2 class="font-semibold text-zinc-950">Documents</h2>
@@ -47,7 +47,7 @@
                 <button
                   v-if="row.isMissing || row.status === 'rejected'"
                   type="button"
-                  class="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-3 py-2 font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  class="portal-button portal-button-primary inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-3 py-2 font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
                   :disabled="refreshing"
                   @click="openUpload(row.resource)"
                 >

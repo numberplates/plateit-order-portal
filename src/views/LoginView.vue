@@ -1,6 +1,6 @@
 <template>
-  <main class="grid min-h-screen place-items-center bg-zinc-100 px-4 py-8">
-    <section class="w-full max-w-md rounded-xl border border-zinc-200 bg-white shadow-sm">
+  <main class="portal-login portal-page grid min-h-screen place-items-center bg-zinc-100 px-4 py-8">
+    <section class="portal-card portal-login-card w-full max-w-md rounded-xl border border-zinc-200 bg-white shadow-sm">
       <div class="border-b border-zinc-200 px-6 py-5">
         <CompanyLogo :config="companyConfig" />
         <h1 class="text-2xl font-semibold text-zinc-950">{{ companyConfig.loginTitle }}</h1>
@@ -15,7 +15,7 @@
           <input
             id="order-id"
             v-model.number="state.order_id"
-            class="w-full rounded-lg border border-zinc-300 px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
+            class="portal-input w-full rounded-lg border border-zinc-300 px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
             type="number"
             min="1"
             placeholder="Enter your order ID"
@@ -28,7 +28,7 @@
           <input
             id="email"
             v-model="state.email"
-            class="w-full rounded-lg border border-zinc-300 px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
+            class="portal-input w-full rounded-lg border border-zinc-300 px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
             type="email"
             placeholder="you@example.com"
             required
@@ -43,7 +43,7 @@
 
         <button
           type="submit"
-          class="inline-flex items-center justify-center gap-2 w-full rounded-lg bg-zinc-900 px-4 py-2.5 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+          class="portal-button portal-button-primary inline-flex items-center justify-center gap-2 w-full rounded-lg bg-zinc-900 px-4 py-2.5 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
           :disabled="isLoading"
         >
           <ButtonIcon name="arrow-right" />

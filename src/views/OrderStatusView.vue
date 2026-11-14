@@ -1,5 +1,5 @@
 <template>
-  <main class="min-h-screen bg-zinc-100 py-8 print:bg-white print:py-0">
+  <main class="portal-order portal-page min-h-screen bg-zinc-100 py-8 print:bg-white print:py-0">
     <div class="mx-auto w-full max-w-5xl px-4 print:max-w-none print:px-0">
       <div
         v-if="isInitialLoading"
@@ -43,7 +43,7 @@
 
             <button
               type="button"
-              class="inline-flex items-center justify-center gap-2 print-hidden rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
+              class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 print-hidden rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
               @click="handlePrint"
             >
               <ButtonIcon name="printer" />
@@ -106,7 +106,7 @@
         <div class="print-hidden flex justify-end border-t border-zinc-200 pt-6">
           <button
             type="button"
-            class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
+            class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
             @click="handleExit"
           >
             <ButtonIcon name="exit" />

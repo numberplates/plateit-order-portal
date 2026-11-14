@@ -4,7 +4,7 @@
     class="fixed inset-0 z-50 grid place-items-center bg-black/50 p-5"
     @click.self="emit('close')"
   >
-    <section class="max-h-[calc(100vh-40px)] w-full max-w-2xl overflow-auto rounded-xl border border-zinc-200 bg-white shadow-xl">
+    <section class="portal-card portal-upload-modal max-h-[calc(100vh-40px)] w-full max-w-2xl overflow-auto rounded-xl border border-zinc-200 bg-white shadow-xl">
       <div class="flex items-start justify-between gap-4 border-b border-zinc-200 px-5 py-4">
         <div>
           <h2 class="font-semibold text-zinc-950">{{ title }}</h2>
@@ -13,7 +13,7 @@
 
         <button
           type="button"
-          class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+          class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
           @click="emit('close')"
         >
           <ButtonIcon name="close" />
@@ -50,7 +50,7 @@
           <select
             id="document-subtype"
             v-model="state.subtype"
-            class="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
+            class="portal-input w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
             required
           >
             <option :value="null" disabled>Select document subtype</option>
@@ -73,7 +73,7 @@
         <div class="flex justify-end gap-2">
           <button
             type="button"
-            class="inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+            class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
             :disabled="isSubmitting"
             @click="emit('close')"
           >
@@ -83,7 +83,7 @@
 
           <button
             type="submit"
-            class="inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+            class="portal-button portal-button-primary inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
             :disabled="isSubmitting"
           >
             <ButtonIcon name="upload" />

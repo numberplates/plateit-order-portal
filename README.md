@@ -71,6 +71,35 @@ Existing sample company overrides and logos have been moved into these local dir
 
 Configuration changes require a rebuild and redeploy; no API changes are needed. The resulting configuration and logos are public frontend content, even though their source files are Git-ignored; do not include secrets.
 
+## Company styling
+
+Styling lives entirely in CSS. Define shared overrides in optional `config/defaults.css` and company-specific overrides in `config/companies/<id>.css`:
+
+```css
+.portal {
+  --portal-primary-color: #0f766e;
+  --portal-primary-hover-color: #115e59;
+  --portal-primary-text-color: #ffffff;
+  --portal-page-background: #e6f4f1;
+  --portal-surface-color: #ffffff;
+  --portal-text-color: #134e4a;
+  --portal-border-radius: 1.5rem;
+}
+```
+
+The cascade applies tracked defaults from `src/style.css`, then shared local CSS, then the active company's CSS. Omitted variables inherit their defaults. Variables control primary buttons, page backgrounds, cards and input focus borders. `--portal-text-color` supplies inherited text colour; use custom CSS for elements with explicit text colours.
+
+When changing companies, the previous custom stylesheet is removed. Local CSS files are Git-ignored and included at build time. Use ordinary CSS; Tailwind directives are not processed in these files. JS configuration handles text and logos only.
+
+Available styling hooks include `.portal`, `.portal-page`, `.portal-login`, `.portal-login-card`, `.portal-order`, `.portal-card`, `.portal-upload-modal`, `.portal-button`, `.portal-button-primary`, `.portal-button-secondary` and `.portal-input`. Theme values are available as CSS variables such as `--portal-primary-color`. Prefix selectors with `.portal` to keep styles within the application:
+
+```css
+.portal .portal-login-card { max-width: 56rem; }
+.portal .portal-button-primary { text-transform: uppercase; }
+```
+
+The local company 2 example uses `config/companies/2.css` for a wide split login, serif headings and rounded controls. Compare `/c2/status` with company 1's compact monochrome `/c1/status`. On small screens, company 2's login stacks vertically. Copy the ignored files separately to build machines, then rebuild to apply changes.
+
 ## Production
 
 ```bash
