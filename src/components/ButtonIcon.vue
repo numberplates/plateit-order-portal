@@ -27,6 +27,8 @@ const paths = {
   upload: 'M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5',
   printer: 'M6 9V3h12v6M6 18H3V9h18v9h-3M6 14h12v7H6zm11-2h1',
   close: 'm6 6 12 12M6 18 18 6',
+  'chevron-left': 'm15 18-6-6 6-6',
+  'chevron-right': 'm9 18 6-6-6-6',
   exit: 'M9 3H4v18h5m0-9h12m-5-5 5 5-5 5'
 }
 </script>

@@ -1,101 +1,86 @@
 <template>
-  <div
-    v-if="open"
-    class="fixed inset-0 z-50 grid place-items-center bg-black/50 p-5"
-    @click.self="emit('close')"
+  <AppModal
+    :open="open"
+    :title="title"
+    :description="description"
+    content-class="max-h-[calc(100vh-40px)] overflow-auto"
+    @close="emit('close')"
   >
-    <section class="portal-card portal-upload-modal max-h-[calc(100vh-40px)] w-full max-w-2xl overflow-auto rounded-xl border border-zinc-200 bg-white shadow-xl">
-      <div class="flex items-start justify-between gap-4 border-b border-zinc-200 px-5 py-4">
-        <div>
-          <h2 class="font-semibold text-zinc-950">{{ title }}</h2>
-          <p class="mt-1 text-sm text-zinc-500">{{ description }}</p>
-        </div>
+    <form class="space-y-5 px-5 py-4" @submit.prevent="handleSubmit">
+      <div
+        v-if="requirement?.registration"
+        class="text-sm text-zinc-700"
+      >
+        <strong>Registration:</strong>
+        {{ requirement.registration }}
+      </div>
 
+      <div class="space-y-2">
+        <label class="text-sm font-semibold text-zinc-800">File</label>
+
+        <DocumentImageEditor
+          ref="imageEditor"
+          v-model:file="selectedFile"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label
+          for="document-subtype"
+          class="text-sm font-semibold text-zinc-800"
+        >
+          Document
+        </label>
+
+        <select
+          id="document-subtype"
+          v-model="state.subtype"
+          class="portal-input w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
+          required
+        >
+          <option :value="null" disabled>Select document subtype</option>
+          <option
+            v-for="option in availableSubtypeOptions"
+            :key="option.value"
+            :value="option.value"
+          >
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+
+      <AppAlert
+        v-if="errorMessage"
+        color="error"
+        :description="errorMessage"
+      />
+
+      <div class="flex justify-end gap-2">
         <button
           type="button"
-          class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+          class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+          :disabled="isSubmitting"
           @click="emit('close')"
         >
           <ButtonIcon name="close" />
-          Close
+          Cancel
+        </button>
+
+        <button
+          type="submit"
+          class="portal-button portal-button-primary inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+          :disabled="isSubmitting"
+        >
+          <ButtonIcon name="upload" />
+          {{ isSubmitting ? 'Uploading…' : 'Upload Document' }}
         </button>
       </div>
-
-      <form class="space-y-5 px-5 py-4" @submit.prevent="handleSubmit">
-        <div
-          v-if="requirement?.registration"
-          class="text-sm text-zinc-700"
-        >
-          <strong>Registration:</strong>
-          {{ requirement.registration }}
-        </div>
-
-        <div class="space-y-2">
-          <label class="text-sm font-semibold text-zinc-800">File</label>
-
-          <DocumentImageEditor
-            ref="imageEditor"
-            v-model:file="selectedFile"
-          />
-        </div>
-
-        <div class="space-y-2">
-          <label
-            for="document-subtype"
-            class="text-sm font-semibold text-zinc-800"
-          >
-            Document
-          </label>
-
-          <select
-            id="document-subtype"
-            v-model="state.subtype"
-            class="portal-input w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
-            required
-          >
-            <option :value="null" disabled>Select document subtype</option>
-            <option
-              v-for="option in availableSubtypeOptions"
-              :key="option.value"
-              :value="option.value"
-            >
-              {{ option.label }}
-            </option>
-          </select>
-        </div>
-
-        <AppAlert
-          v-if="errorMessage"
-          color="error"
-          :description="errorMessage"
-        />
-
-        <div class="flex justify-end gap-2">
-          <button
-            type="button"
-            class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
-            :disabled="isSubmitting"
-            @click="emit('close')"
-          >
-            <ButtonIcon name="close" />
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            class="portal-button portal-button-primary inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
-            :disabled="isSubmitting"
-          >
-            <ButtonIcon name="upload" />
-            {{ isSubmitting ? 'Uploading…' : 'Upload Document' }}
-          </button>
-        </div>
-      </form>
-    </section>
-  </div>
+    </form>
+  </AppModal>
 </template>
 
 <script setup>
+import AppModal from './AppModal.vue'
 import ButtonIcon from './ButtonIcon.vue'
 import { computed, reactive, ref, watch } from 'vue'
 import AppAlert from './AppAlert.vue'

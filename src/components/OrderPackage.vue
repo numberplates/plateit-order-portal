@@ -67,7 +67,16 @@
             </thead>
             <tbody>
               <tr v-for="plate in packageItem.plates" :key="plate.id">
-                <td class="border-b border-zinc-200 px-2.5 py-3"><strong>{{ plate.registration }}</strong></td>
+                <td class="border-b border-zinc-200 px-2.5 py-3">
+                  <button
+                    type="button"
+                    class="font-semibold text-zinc-950 underline-offset-2 hover:underline focus:outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-zinc-400"
+                    title="Preview plate"
+                    @click="openPlatePreview(plate)"
+                  >
+                    {{ plate.registration }}
+                  </button>
+                </td>
                 <td class="border-b border-zinc-200 px-2.5 py-3">{{ plate.type ?? plate.name ?? '—' }}</td>
                 <td class="border-b border-zinc-200 px-2.5 py-3">{{ getPlateSize(plate) }}</td>
                 <td class="border-b border-zinc-200 px-2.5 py-3">{{ formatPrice(plate.price) }}</td>
@@ -104,11 +113,21 @@
       <OrderNotes :notes="packageItem.notes ?? []" />
     </div>
   </section>
+
+  <PlatePreviewModal
+    :open="isPreviewOpen"
+    :plate="selectedPlate"
+    :plates="packageItem.plates ?? []"
+    @close="closePlatePreview"
+    @select="selectedPlate = $event"
+  />
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { formatDateString, formatPrice } from '../utils/formatters'
 import OrderNotes from './OrderNotes.vue'
+import PlatePreviewModal from './PlatePreviewModal.vue'
 
 defineProps({
   packageItem: {
@@ -124,6 +143,30 @@ defineProps({
     required: true
   }
 })
+
+const isPreviewOpen = ref(false)
+const selectedPlate = ref(null)
+
+/**
+ * Opens the plate preview modal for the selected plate.
+ *
+ * @param {object} plate
+ * @returns {void}
+ */
+function openPlatePreview(plate) {
+  selectedPlate.value = plate
+  isPreviewOpen.value = true
+}
+
+/**
+ * Closes the plate preview modal.
+ *
+ * @returns {void}
+ */
+function closePlatePreview() {
+  isPreviewOpen.value = false
+  selectedPlate.value = null
+}
 
 /**
  * Returns a readable plate size.

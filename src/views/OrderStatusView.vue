@@ -24,7 +24,7 @@
             <div>
               <div class="flex flex-wrap items-center gap-2">
                 <h1 class="text-2xl font-semibold text-zinc-950">
-                  Order #{{ order.id }}
+                  Order #{{ order.identifier ?? order.id }}
                 </h1>
 
                 <span
@@ -178,7 +178,7 @@ const isExpiringSoon = computed(() => {
 
 watchEffect(() => {
   document.title = order.value
-    ? `Order #${order.value.id} - Order Status`
+    ? `Order Status #${order.value.identifier ?? order.value.id}`
     : 'Order Status'
 })
 

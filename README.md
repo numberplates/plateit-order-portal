@@ -118,3 +118,10 @@ npm run build
 Deploy the generated `dist` directory as a normal SPA and configure your web server to fall back to `index.html` for portal routes.
 
 The API and object-storage CORS policies must allow the hostname from which this portal is served.
+
+## Plate previews
+
+Number plate registrations in the order package table are clickable. A protected
+`design_preview` path is resolved to a temporary signed URL and displayed in a
+modal. When a package contains multiple plates, the customer can cycle through
+them using the previous/next controls or the left/right arrow keys.
