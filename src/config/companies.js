@@ -1,6 +1,9 @@
 const defaults = {
   loginTitle: 'Access Your Order',
   loginButtonText: 'Access Order',
+  loginOrderNumberLabel: 'Order Number',
+  loginEmailLabel: 'Email Address',
+  loginDisablePrefilledFields: false,
   loginIntroduction: 'View your order details and use the secure document portal to upload any supporting documents we require.',
   logoUrl: null,
   logoAlt: '',

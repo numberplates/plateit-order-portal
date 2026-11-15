@@ -28,6 +28,11 @@
     border-color: var(--portal-primary-color);
     outline-color: var(--portal-primary-color);
   }
+  .portal .portal-input:disabled {
+    background-color: #f4f4f5;
+    color: #52525b;
+    cursor: not-allowed;
+  }
 }
 
 @media print {

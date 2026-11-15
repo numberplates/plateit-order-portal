@@ -11,10 +11,11 @@
 
       <form class="space-y-4 px-6 py-5" @submit.prevent="handleSubmit">
         <div class="space-y-1.5">
-          <label for="order-id" class="text-sm font-semibold text-zinc-800">Order Number</label>
+          <label for="order-id" class="text-sm font-semibold text-zinc-800">{{ companyConfig.loginOrderNumberLabel }}</label>
           <input
             id="order-id"
             v-model.number="state.order_id"
+            :disabled="disableOrderId"
             class="portal-input w-full rounded-lg border border-zinc-300 px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
             type="number"
             min="1"
@@ -24,10 +25,11 @@
         </div>
 
         <div class="space-y-1.5">
-          <label for="email" class="text-sm font-semibold text-zinc-800">Email Address</label>
+          <label for="email" class="text-sm font-semibold text-zinc-800">{{ companyConfig.loginEmailLabel }}</label>
           <input
             id="email"
             v-model="state.email"
+            :disabled="disableEmail"
             class="portal-input w-full rounded-lg border border-zinc-300 px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
             type="email"
             placeholder="you@example.com"
@@ -70,6 +72,12 @@ const route = useRoute()
 const router = useRouter()
 const companyId = Number(route.params.companyId)
 const companyConfig = getCompanyConfig(companyId)
+const disableOrderId = companyConfig.loginDisablePrefilledFields === true
+  && typeof route.query.order_id === 'string'
+  && route.query.order_id.trim() !== ''
+const disableEmail = companyConfig.loginDisablePrefilledFields === true
+  && typeof route.query.email === 'string'
+  && route.query.email.trim() !== ''
 
 scopedAuth.clearAuth()
 

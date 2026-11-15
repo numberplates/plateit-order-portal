@@ -57,6 +57,8 @@ Edit `123.js` for `/c123/status`:
 export default {
   loginTitle: 'Welcome to Example Plates',
   loginButtonText: 'View My Order',
+  loginOrderIdLabel: 'Order Reference',
+  loginEmailLabel: 'Your Email Address',
   loginIntroduction: 'Enter your order details to securely upload your supporting documents.',
   logoUrl: '/company-assets/example-plates.svg',
   logoAlt: 'Example Plates',
@@ -66,6 +68,8 @@ export default {
 
 All fields are optional. Companies without configuration use the defaults, including no logo. `loginButtonText` defaults to `Access Order`; the loading label remains `Accessing Order…`. Logos appear on both the login and order pages; unavailable images are hidden. Introduction text is rendered as plain text.
 
+Login field labels are configurable with `loginOrderIdLabel` (default: `Order Number`) and `loginEmailLabel` (default: `Email Address`). Set them in `config/defaults.js` or a company's configuration; omitted labels inherit the defaults.
+
 Place company logos in the Git-ignored `public/company-assets/` directory and reference them as `/company-assets/filename.svg` (PNG and other browser-supported formats also work), or use an HTTPS image URL. Set `logoAlt` to the company name for accessibility.
 
 The app includes a default favicon at `public/favicon.svg`. Override `faviconUrl` in `config/defaults.js` for a shared installation default, or in `config/companies/<id>.js` for a company-specific favicon. Omitted values inherit the normal configuration defaults. Empty or null values use the app favicon. Store local company favicons in `public/company-assets/` and reference them as `/company-assets/filename.svg` (PNG and ICO also work), or use an HTTPS URL. The favicon updates when the company route changes, including a return to the default for unconfigured companies.
@@ -73,6 +77,8 @@ The app includes a default favicon at `public/favicon.svg`. Override `faviconUrl
 Existing sample company overrides and logos have been moved into these local directories. They will not be included in new checkouts. Supply these directories separately on each development or build machine before building. Both directories are optional: a clean checkout builds using defaults alone. Keep a separate backup of your local configuration and assets.
 
 Configuration changes require a rebuild and redeploy; no API changes are needed. The resulting configuration and logos are public frontend content, even though their source files are Git-ignored; do not include secrets.
+
+Set `loginDisablePrefilledFields: true` in a company's configuration (or `config/defaults.js`) to disable login fields supplied by a link, for example `/c1/status?order_id=1234&email=john%40example.com`. The default is `false`. Each field is locked only when its corresponding query parameter is a single, non-empty string; missing or blank fields remain editable. Values still undergo the existing login validation. Disabled fields are skipped during keyboard navigation. Their values are still validated and submitted from Vue state. This is a presentation setting; it does not change authentication or prevent someone editing the URL.
 
 ## Company styling
 
