@@ -66,14 +66,13 @@
         />
 
         <div class="grid gap-8 md:grid-cols-2">
-          <OrderAddressCard
-            title="Company"
-            :resource="order.company"
+          <OrderPartyCompanyCard
+            :company="order.company"
           />
 
-          <OrderAddressCard
-            title="Customer"
-            :resource="order.ship_to ?? order.customer"
+          <OrderPartyCustomerCard
+            :customer="order.customer"
+            :ship-to="order.ship_to"
           />
         </div>
 
@@ -125,7 +124,8 @@ import { useRoute, useRouter } from 'vue-router'
 import AppAlert from '../components/AppAlert.vue'
 import CompanyLogo from '../components/CompanyLogo.vue'
 import { getCompanyConfig } from '../config/companies'
-import OrderAddressCard from '../components/OrderAddressCard.vue'
+import OrderPartyCompanyCard from '../components/OrderPartyCompanyCard.vue'
+import OrderPartyCustomerCard from '../components/OrderPartyCustomerCard.vue'
 import OrderDocuments from '../components/OrderDocuments.vue'
 import OrderNotes from '../components/OrderNotes.vue'
 import OrderPackage from '../components/OrderPackage.vue'
