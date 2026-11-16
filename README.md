@@ -115,6 +115,43 @@ Available styling hooks include `.portal`, `.portal-page`, `.portal-login`, `.po
 
 The local company 2 example uses `config/companies/2.css` for a wide split login, serif headings and rounded controls. Compare `/c2/status` with company 1's compact monochrome `/c1/status`. On small screens, company 2's login stacks vertically. Copy the ignored files separately to build machines, then rebuild to apply changes.
 
+## Presentation hooks
+
+Company stylesheets can hide or restyle these classes without depending on Tailwind utilities or element positions. Classes repeat safely across packages; they are not unique HTML IDs. Existing appearance and behaviour stay the same until you add overrides.
+
+| Area | Classes |
+| --- | --- |
+| Order header | `.order-header`, `.order-number`, `.order-status`, `.order-date` |
+| Party cards | `.order-parties`, `.order-company`, `.order-customer` |
+| Documents | `.order-documents-section` (whole area), `.order-documents` (card), `.documents-table` |
+| Packages | `.order-package`, `.package-plates`, `.package-products` |
+| Shipping | `.package-shipping`, `.shipping-name`, `.shipping-price`, `.shipping-tracking`, `.shipping-despatched` |
+| Tables | `.plates-table`, `.products-table` |
+| Totals | `.order-totals-section` (whole area), `.order-totals` (card) |
+| Notes | `.order-notes` (all notes), `.order-notes-section` (order notes only), `.package-notes` (package notes only) |
+| Footer actions | `.order-actions` |
+
+Table columns have the same class on their header and every corresponding data cell:
+
+| Table | Column classes |
+| --- | --- |
+| Plates | `.plate-registration`, `.plate-type`, `.plate-size`, `.plate-price`, `.plate-quantity` |
+| Products | `.product-name`, `.product-price`, `.product-quantity` |
+| Documents | `.document-action`, `.document-type`, `.document-reference`, `.document-status`, `.document-reason` (when rejections exist) |
+
+`.order-price` groups plate and product price columns (headers and cells) plus the shipping price. Shipping service and tracking remain visible when you hide it. To hide all prices and totals on screen and in print:
+
+```css
+.portal .order-price,
+.portal .order-totals-section {
+  display: none;
+}
+```
+
+A ready-to-copy example is included at `examples/packing-slip.css`. Copy or append its contents to `config/companies/<id>.css`, or to `config/defaults.css` for all companies, then rebuild. It also relaxes table minimum widths after hiding price columns. It is not enabled automatically and does not replace any existing company stylesheet.
+
+Use an `@media print` block if an override should apply only to the printed packing slip. The existing `.print-hidden` rules still hide document uploads and action buttons in print. These hooks change presentation only; data remains available in the API and markup.
+
 ## Production
 
 ```bash

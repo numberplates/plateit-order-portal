@@ -1,7 +1,7 @@
 <template>
   <section
     v-if="publicNotes.length"
-    class="rounded-xl border border-zinc-200 bg-white shadow-sm"
+    class="order-notes rounded-xl border border-zinc-200 bg-white shadow-sm"
   >
     <div class="border-b border-zinc-200 px-5 py-4">
       <h2 class="font-semibold text-zinc-950">Notes</h2>

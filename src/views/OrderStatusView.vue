@@ -18,17 +18,17 @@
         v-else-if="order"
         class="space-y-8"
       >
-        <header>
+        <header class="order-header">
           <CompanyLogo :config="companyConfig" />
           <div class="flex flex-wrap items-start justify-between gap-4">
             <div>
               <div class="flex flex-wrap items-center gap-2">
-                <h1 class="text-2xl font-semibold text-zinc-950">
+                <h1 class="order-number text-2xl font-semibold text-zinc-950">
                   Order #{{ order.identifier ?? order.id }}
                 </h1>
 
                 <span
-                  class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold"
+                  class="order-status inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold"
                   :class="fulfilmentBadgeClass"
                   :title="order.system_order_fulfilment_status?.description"
                 >
@@ -36,7 +36,7 @@
                 </span>
               </div>
 
-              <p class="mt-3 text-sm text-zinc-500">
+              <p class="order-date mt-3 text-sm text-zinc-500">
                 Date {{ formatDateString(orderDate, false) }}
               </p>
             </div>
@@ -65,7 +65,7 @@
           :description="errorMessage"
         />
 
-        <div class="grid gap-8 md:grid-cols-2">
+        <div class="order-parties grid gap-8 md:grid-cols-2">
           <OrderPartyCompanyCard
             :company="order.company"
           />
@@ -76,7 +76,7 @@
           />
         </div>
 
-        <div class="print-hidden">
+        <div class="order-documents-section print-hidden">
           <OrderDocuments
             :order="order"
             :refreshing="isRefreshing"
@@ -93,16 +93,17 @@
           :total="order.packages?.length ?? 0"
         />
 
-        <div class="grid gap-8 md:grid-cols-2">
+        <div class="order-totals-section grid gap-8 md:grid-cols-2">
           <OrderTotals :order="order" />
         </div>
 
         <OrderNotes
           v-if="order.notes?.length"
+          class="order-notes-section"
           :notes="order.notes"
         />
 
-        <div class="print-hidden flex justify-end border-t border-zinc-200 pt-6">
+        <div class="order-actions print-hidden flex justify-end border-t border-zinc-200 pt-6">
           <button
             type="button"
             class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"

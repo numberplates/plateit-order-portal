@@ -1,5 +1,5 @@
 <template>
-  <section class="portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
+  <section class="order-package portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
     <div class="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <div class="flex flex-wrap items-center gap-2">
@@ -19,16 +19,16 @@
 
       <div
         v-if="packageItem.shipping"
-        class="text-sm sm:text-right"
+        class="package-shipping text-sm sm:text-right"
       >
         <strong class="text-zinc-950">
-          {{ packageItem.shipping.name }}
-          {{ formatPrice(packageItem.shipping.price) }}
+          <span class="shipping-name">{{ packageItem.shipping.name }}</span>
+          {{ ' ' }}<span class="shipping-price order-price">{{ formatPrice(packageItem.shipping.price) }}</span>
         </strong>
 
         <div
           v-if="packageItem.shipping.tracking_code"
-          class="text-zinc-500"
+          class="shipping-tracking text-zinc-500"
         >
           Tracking:
           <a
@@ -43,7 +43,7 @@
 
         <div
           v-if="packageItem.shipping.despatched_at"
-          class="text-zinc-500"
+          class="shipping-despatched text-zinc-500"
         >
           Despatched {{ formatDateString(packageItem.shipping.despatched_at) }}
         </div>
@@ -51,23 +51,23 @@
     </div>
 
     <div class="space-y-6 px-5 py-4">
-      <div v-if="packageItem.plates?.length">
+      <div v-if="packageItem.plates?.length" class="package-plates">
         <h3 class="mb-2.5 font-semibold text-zinc-950">Number Plates</h3>
 
         <div class="overflow-x-auto">
-          <table class="min-w-[620px] w-full border-collapse text-sm">
+          <table class="plates-table min-w-[620px] w-full border-collapse text-sm">
             <thead>
               <tr class="text-left text-zinc-500">
-                <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Registration</th>
-                <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Type</th>
-                <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Size</th>
-                <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Price</th>
-                <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Qty</th>
+                <th class="plate-registration border-b border-zinc-200 px-2.5 py-3 font-semibold">Registration</th>
+                <th class="plate-type border-b border-zinc-200 px-2.5 py-3 font-semibold">Type</th>
+                <th class="plate-size border-b border-zinc-200 px-2.5 py-3 font-semibold">Size</th>
+                <th class="plate-price order-price border-b border-zinc-200 px-2.5 py-3 font-semibold">Price</th>
+                <th class="plate-quantity border-b border-zinc-200 px-2.5 py-3 font-semibold">Qty</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="plate in packageItem.plates" :key="plate.id">
-                <td class="border-b border-zinc-200 px-2.5 py-3">
+                <td class="plate-registration border-b border-zinc-200 px-2.5 py-3">
                   <button
                     type="button"
                     class="font-semibold text-zinc-950 underline-offset-2 hover:underline focus:outline-none focus-visible:rounded focus-visible:ring-2 focus-visible:ring-zinc-400"
@@ -77,40 +77,40 @@
                     {{ plate.registration }}
                   </button>
                 </td>
-                <td class="border-b border-zinc-200 px-2.5 py-3">{{ plate.type ?? plate.name ?? '—' }}</td>
-                <td class="border-b border-zinc-200 px-2.5 py-3">{{ getPlateSize(plate) }}</td>
-                <td class="border-b border-zinc-200 px-2.5 py-3">{{ formatPrice(plate.price) }}</td>
-                <td class="border-b border-zinc-200 px-2.5 py-3">{{ plate.quantity ?? 1 }}</td>
+                <td class="plate-type border-b border-zinc-200 px-2.5 py-3">{{ plate.type ?? plate.name ?? '—' }}</td>
+                <td class="plate-size border-b border-zinc-200 px-2.5 py-3">{{ getPlateSize(plate) }}</td>
+                <td class="plate-price order-price border-b border-zinc-200 px-2.5 py-3">{{ formatPrice(plate.price) }}</td>
+                <td class="plate-quantity border-b border-zinc-200 px-2.5 py-3">{{ plate.quantity ?? 1 }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <div v-if="packageItem.products?.length">
+      <div v-if="packageItem.products?.length" class="package-products">
         <h3 class="mb-2.5 font-semibold text-zinc-950">Products</h3>
 
         <div class="overflow-x-auto">
-          <table class="min-w-[520px] w-full border-collapse text-sm">
+          <table class="products-table min-w-[520px] w-full border-collapse text-sm">
             <thead>
               <tr class="text-left text-zinc-500">
-                <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Product</th>
-                <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Price</th>
-                <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Qty</th>
+                <th class="product-name border-b border-zinc-200 px-2.5 py-3 font-semibold">Product</th>
+                <th class="product-price order-price border-b border-zinc-200 px-2.5 py-3 font-semibold">Price</th>
+                <th class="product-quantity border-b border-zinc-200 px-2.5 py-3 font-semibold">Qty</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="product in packageItem.products" :key="product.id">
-                <td class="border-b border-zinc-200 px-2.5 py-3">{{ product.name ?? product.product?.name ?? `Product #${product.id}` }}</td>
-                <td class="border-b border-zinc-200 px-2.5 py-3">{{ formatPrice(product.price) }}</td>
-                <td class="border-b border-zinc-200 px-2.5 py-3">{{ product.quantity ?? 1 }}</td>
+                <td class="product-name border-b border-zinc-200 px-2.5 py-3">{{ product.name ?? product.product?.name ?? `Product #${product.id}` }}</td>
+                <td class="product-price order-price border-b border-zinc-200 px-2.5 py-3">{{ formatPrice(product.price) }}</td>
+                <td class="product-quantity border-b border-zinc-200 px-2.5 py-3">{{ product.quantity ?? 1 }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <OrderNotes :notes="packageItem.notes ?? []" />
+      <OrderNotes class="package-notes" :notes="packageItem.notes ?? []" />
     </div>
   </section>
 

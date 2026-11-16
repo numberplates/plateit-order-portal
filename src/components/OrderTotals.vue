@@ -1,5 +1,5 @@
 <template>
-  <section class="portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
+  <section class="order-totals portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
     <div class="border-b border-zinc-200 px-5 py-4">
       <h2 class="font-semibold text-zinc-950">Totals</h2>
     </div>

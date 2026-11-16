@@ -1,5 +1,5 @@
 <template>
-  <section class="portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
+  <section class="order-documents portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
     <div class="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
       <div>
         <h2 class="font-semibold text-zinc-950">Documents</h2>
@@ -25,16 +25,16 @@
 
     <div class="px-5 py-4">
       <div v-if="tableRows.length" class="overflow-x-auto">
-        <table class="min-w-[680px] w-full border-collapse text-sm">
+        <table class="documents-table min-w-[680px] w-full border-collapse text-sm">
           <thead>
             <tr class="text-left text-zinc-500">
-              <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Action</th>
-              <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Type</th>
-              <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Reference</th>
-              <th class="border-b border-zinc-200 px-2.5 py-3 font-semibold">Status</th>
+              <th class="document-action border-b border-zinc-200 px-2.5 py-3 font-semibold">Action</th>
+              <th class="document-type border-b border-zinc-200 px-2.5 py-3 font-semibold">Type</th>
+              <th class="document-reference border-b border-zinc-200 px-2.5 py-3 font-semibold">Reference</th>
+              <th class="document-status border-b border-zinc-200 px-2.5 py-3 font-semibold">Status</th>
               <th
                 v-if="hasRejectedDocuments"
-                class="border-b border-zinc-200 px-2.5 py-3 font-semibold"
+                class="document-reason border-b border-zinc-200 px-2.5 py-3 font-semibold"
               >
                 Reason
               </th>
@@ -43,7 +43,7 @@
 
           <tbody>
             <tr v-for="row in tableRows" :key="row.id">
-              <td class="border-b border-zinc-200 px-2.5 py-3">
+              <td class="document-action border-b border-zinc-200 px-2.5 py-3">
                 <button
                   v-if="row.isMissing || row.status === 'rejected'"
                   type="button"
@@ -57,15 +57,15 @@
                 <span v-else class="text-zinc-400">—</span>
               </td>
 
-              <td class="border-b border-zinc-200 px-2.5 py-3">
+              <td class="document-type border-b border-zinc-200 px-2.5 py-3">
                 <strong>{{ formatDocumentType(row.resource.type) }}</strong>
               </td>
 
-              <td class="border-b border-zinc-200 px-2.5 py-3 text-zinc-500">
+              <td class="document-reference border-b border-zinc-200 px-2.5 py-3 text-zinc-500">
                 {{ getDocumentReference(row.resource) }}
               </td>
 
-              <td class="border-b border-zinc-200 px-2.5 py-3">
+              <td class="document-status border-b border-zinc-200 px-2.5 py-3">
                 <span
                   class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold"
                   :class="getStatusBadge(row.status).className"
@@ -76,7 +76,7 @@
 
               <td
                 v-if="hasRejectedDocuments"
-                class="border-b border-zinc-200 px-2.5 py-3"
+                class="document-reason border-b border-zinc-200 px-2.5 py-3"
               >
                 <span
                   v-if="row.status === 'rejected'"

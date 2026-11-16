@@ -1,0 +1,20 @@
+/* Copy or append to config/companies/<id>.css (or config/defaults.css).
+   Applies on screen and in print. No prices or totals; all quantities remain. */
+.portal .order-price,
+.portal .order-totals-section {
+  display: none;
+}
+
+/* Allow tables to shrink when price columns are removed. */
+.portal .plates-table,
+.portal .products-table {
+  min-width: 0;
+}
+
+/* Optional: uncomment to hide these sections too.
+.portal .order-documents-section,
+.portal .order-notes,
+.portal .order-company {
+  display: none;
+}
+*/
