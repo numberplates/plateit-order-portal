@@ -103,16 +103,6 @@
           :notes="order.notes"
         />
 
-        <div class="order-actions form-actions print-hidden">
-          <button
-            type="button"
-            class="portal-button portal-button-secondary"
-            @click="handleExit"
-          >
-            <ButtonIcon name="exit" />
-            Exit
-          </button>
-        </div>
       </div>
     </div>
   </main>
@@ -269,16 +259,6 @@ async function fetchOrder(initial = false) {
 async function handleUnauthorized() {
   scopedAuth.clearAuth()
   await redirectToLogin({ expired: '1' })
-}
-
-/**
- * Ends the current scoped session.
- *
- * @returns {Promise<void>}
- */
-async function handleExit() {
-  scopedAuth.clearAuth()
-  await redirectToLogin()
 }
 
 /**

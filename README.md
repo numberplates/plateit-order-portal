@@ -133,7 +133,6 @@ Company stylesheets can hide or restyle these classes without depending on eleme
 | Tables | `.plates-table`, `.products-table` |
 | Totals | `.order-totals-section` (whole area), `.order-totals` (card) |
 | Notes | `.order-notes` (all notes), `.order-notes-section` (order notes only), `.package-notes` (package notes only) |
-| Footer actions | `.order-actions` |
 
 Table columns have the same class on their header and every corresponding data cell:
 

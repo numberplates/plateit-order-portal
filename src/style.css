@@ -366,11 +366,6 @@
     margin-top: 0.6rem;
   }
 
-  .order-actions {
-    border-top: 1px solid var(--portal-border-color);
-    padding-top: 1.25rem;
-  }
-
   .order-loading {
     min-height: 15rem;
     display: grid;
