@@ -20,7 +20,7 @@ watchEffect(() => {
 onBeforeUnmount(() => favicon?.setAttribute('href', originalFavicon))
 
 // Only the current company's CSS is installed, avoiding cross-company styles.
-const stylesheets = import.meta.glob('../config/{defaults,companies/*}.css', {
+const stylesheets = import.meta.glob('../overrides/{shared,companies/*}/styles.css', {
   query: '?raw', import: 'default', eager: true
 })
 const customStyle = document.createElement('style')
@@ -29,8 +29,8 @@ document.head.append(customStyle)
 watchEffect(() => {
   const companyId = String(route.params.companyId ?? '')
   customStyle.textContent = [
-    stylesheets['../config/defaults.css'],
-    stylesheets[`../config/companies/${companyId}.css`]
+    stylesheets['../overrides/shared/styles.css'],
+    stylesheets[`../overrides/companies/${companyId}/styles.css`]
   ].filter(Boolean).join('\n')
 })
 onBeforeUnmount(() => customStyle.remove())

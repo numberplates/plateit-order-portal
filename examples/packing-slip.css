@@ -1,4 +1,4 @@
-/* Copy or append to config/companies/<id>.css (or config/defaults.css).
+/* Copy or append to overrides/companies/<id>/styles.css (or overrides/shared/styles.css).
    Applies on screen and in print. No prices or totals; all quantities remain. */
 .portal .order-price,
 .portal .order-totals-section {

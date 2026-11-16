@@ -1,3 +1,4 @@
+import { getLoginDetails } from '../src/utils/loginDetails.js'
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
 import vm from 'node:vm'
@@ -76,3 +77,11 @@ for (const [status, body, expectedMessage] of [
   await assert.rejects(uploadFileToStorage(signedUrl, storageHeaders, file), error => error.status === undefined)
 }
 console.log('API base paths, direct/proxied uploads, token boundaries and proxy errors passed.')
+
+// Login references must survive both numeric-looking and alphanumeric input.
+for (const [input, expected] of [[1234, '1234'], ['1234', '1234'], ['WEB-1234', 'WEB-1234'], ['001234', '001234'], ['9007199254740993', '9007199254740993'], ['  WEB-1234  ', 'WEB-1234']]) {
+  assert.deepEqual(getLoginDetails(input, ' john@example.com '), { order_id: expected, email: 'john@example.com' })
+}
+for (const reference of ['', '   ', null, undefined]) assert.equal(getLoginDetails(reference, 'john@example.com'), null)
+for (const email of ['', ' ', 'john', 'john@', '@example.com', 'john@example', 'john @example.com', 'john@@example.com']) assert.equal(getLoginDetails('WEB-1234', email), null)
+console.log('Login reference preservation and validation checks passed.')

@@ -27,11 +27,10 @@
           <label for="order-id" class="field-label">{{ companyConfig.loginOrderNumberLabel }}</label>
           <input
             id="order-id"
-            v-model.number="state.order_id"
+            v-model="state.order_id"
             :disabled="disableOrderId"
             class="portal-input"
-            type="number"
-            min="1"
+            type="text"
             placeholder="Enter your order ID"
             required
           />
@@ -73,7 +72,7 @@
 import ButtonIcon from '../components/ButtonIcon.vue'
 import { computed, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { z } from 'zod'
+import { getLoginDetails } from '../utils/loginDetails'
 import AppAlert from '../components/AppAlert.vue'
 import CompanyLogo from '../components/CompanyLogo.vue'
 import { getCompanyConfig } from '../config/companies'
@@ -109,8 +108,8 @@ if (!Number.isInteger(companyId) || companyId <= 0) {
 
 const state = reactive({
   order_id: typeof route.query.order_id === 'string'
-    ? Number(route.query.order_id)
-    : null,
+    ? route.query.order_id
+    : '',
   email: typeof route.query.email === 'string'
     ? route.query.email
     : ''
@@ -119,10 +118,6 @@ const state = reactive({
 const isLoading = ref(false)
 const errorMessage = ref(null)
 
-const schema = z.object({
-  order_id: z.number().int().positive(),
-  email: z.email()
-})
 
 /**
  * Authenticates the customer and opens their scoped order.
@@ -134,9 +129,9 @@ async function handleSubmit() {
 
   errorMessage.value = null
 
-  const result = schema.safeParse(state)
+  const details = getLoginDetails(state.order_id, state.email)
 
-  if (!result.success) {
+  if (!details) {
     errorMessage.value = 'Please enter a valid order number and email address.'
     return
   }
@@ -147,7 +142,7 @@ async function handleSubmit() {
     const response = await apiFetch('/v3/auth/scoped', {
       method: 'POST',
       body: {
-        ...result.data,
+        ...details,
         company_id: companyId
       }
     })

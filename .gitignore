@@ -4,6 +4,6 @@ dist
 .env
 .DS_Store
 
-# Local company configuration and branding
-/config/
+# Local company configuration and branding.
+/overrides/
 public/company-assets/

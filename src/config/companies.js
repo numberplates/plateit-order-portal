@@ -13,22 +13,22 @@ const defaults = {
   faviconUrl: '/favicon.svg'
 }
 
-const localDefaultsModules = import.meta.glob('../../config/defaults.js', {
+const localDefaultsModules = import.meta.glob('../../overrides/shared/config.js', {
   eager: true,
   import: 'default'
 })
-const localDefaults = localDefaultsModules['../../config/defaults.js'] ?? {}
+const localDefaults = localDefaultsModules['../../overrides/shared/config.js'] ?? {}
 
-// Optional local overrides: one default-exported object per company ID.
+// Optional company overrides: one default-exported config object per company directory.
 // Vite includes matching files at build time; an absent directory is fine.
-const modules = import.meta.glob('../../config/companies/*.js', {
+const modules = import.meta.glob('../../overrides/companies/*/config.js', {
   eager: true,
   import: 'default'
 })
 
 export const companies = Object.fromEntries(
   Object.entries(modules).map(([path, config]) => [
-    path.split('/').pop().replace(/\.js$/, ''),
+    path.split('/').at(-2),
     config
   ])
 )
