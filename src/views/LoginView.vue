@@ -1,18 +1,18 @@
 <template>
-  <main class="portal-login portal-page grid min-h-screen place-items-center bg-zinc-100 px-4 py-8">
-    <section class="portal-card portal-login-card w-full max-w-md rounded-xl border border-zinc-200 bg-white shadow-sm">
-      <div class="border-b border-zinc-200 px-6 py-5">
+  <main class="portal-login portal-page centered-page">
+    <section class="portal-card portal-login-card login-width">
+      <div class="login-header">
         <CompanyLogo :config="companyConfig" />
-        <h1 class="text-2xl font-semibold text-zinc-950">{{ companyConfig.loginTitle }}</h1>
-        <p class="mt-2 text-sm text-zinc-500">
+        <h1 class="page-title">{{ companyConfig.loginTitle }}</h1>
+        <p class="login-introduction">
           {{ companyConfig.loginIntroduction }}
         </p>
       </div>
 
       <div
         v-if="isMalformedLink || isExpired"
-        class="space-y-3 px-6 pt-5"
-        :class="{ 'pb-5': !showLoginForm }"
+        class="login-notices"
+        :class="{ 'login-notices-only': !showLoginForm }"
       >
         <AppAlert
           v-if="isMalformedLink && !isExpired"
@@ -22,14 +22,14 @@
         <AppAlert v-if="isExpired" color="error" :description="expiryMessage" />
       </div>
 
-      <form v-if="showLoginForm" class="space-y-4 px-6 py-5" @submit.prevent="handleSubmit">
-        <div class="space-y-1.5">
-          <label for="order-id" class="text-sm font-semibold text-zinc-800">{{ companyConfig.loginOrderNumberLabel }}</label>
+      <form v-if="showLoginForm" class="login-form" @submit.prevent="handleSubmit">
+        <div class="form-field">
+          <label for="order-id" class="field-label">{{ companyConfig.loginOrderNumberLabel }}</label>
           <input
             id="order-id"
             v-model.number="state.order_id"
             :disabled="disableOrderId"
-            class="portal-input w-full rounded-lg border border-zinc-300 px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
+            class="portal-input"
             type="number"
             min="1"
             placeholder="Enter your order ID"
@@ -37,13 +37,13 @@
           />
         </div>
 
-        <div class="space-y-1.5">
-          <label for="email" class="text-sm font-semibold text-zinc-800">{{ companyConfig.loginEmailLabel }}</label>
+        <div class="form-field">
+          <label for="email" class="field-label">{{ companyConfig.loginEmailLabel }}</label>
           <input
             id="email"
             v-model="state.email"
             :disabled="disableEmail"
-            class="portal-input w-full rounded-lg border border-zinc-300 px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
+            class="portal-input"
             type="email"
             placeholder="you@example.com"
             required
@@ -58,7 +58,7 @@
 
         <button
           type="submit"
-          class="portal-button portal-button-primary inline-flex items-center justify-center gap-2 w-full rounded-lg bg-zinc-900 px-4 py-2.5 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+          class="portal-button portal-button-primary login-submit"
           :disabled="isLoading"
         >
           <ButtonIcon name="arrow-right" />

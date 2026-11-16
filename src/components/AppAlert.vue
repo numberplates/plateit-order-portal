@@ -1,6 +1,6 @@
 <template>
   <div
-    class="rounded-lg border px-4 py-3 text-sm"
+    class="portal-alert"
     :class="alertClass"
     role="alert"
   >
@@ -24,10 +24,10 @@ const props = defineProps({
 
 const alertClass = computed(() => {
   const classes = {
-    error: 'border-red-200 bg-red-50 text-red-800',
-    warning: 'border-amber-200 bg-amber-50 text-amber-800',
-    success: 'border-green-200 bg-green-50 text-green-800',
-    neutral: 'border-zinc-200 bg-zinc-50 text-zinc-700'
+    error: 'alert-error',
+    warning: 'alert-warning',
+    success: 'alert-success',
+    neutral: 'alert-neutral'
   }
 
   return classes[props.color] ?? classes.neutral

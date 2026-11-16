@@ -3,7 +3,7 @@
     v-if="config.logoUrl && !failed"
     :src="config.logoUrl"
     :alt="config.logoAlt"
-    class="mb-5 h-14 max-w-full object-contain object-left"
+    class="company-logo"
     @error="failed = true"
   />
 </template>

@@ -15,9 +15,5 @@
     "vue": "latest",
     "vue-router": "latest",
     "zod": "latest"
-  },
-  "devDependencies": {
-    "@tailwindcss/vite": "latest",
-    "tailwindcss": "latest"
   }
 }

@@ -1,11 +1,11 @@
 <template>
-  <main class="portal-order portal-page min-h-screen bg-zinc-100 py-8 print:bg-white print:py-0">
-    <div class="mx-auto w-full max-w-5xl px-4 print:max-w-none print:px-0">
+  <main class="portal-order portal-page">
+    <div class="order-container">
       <div
         v-if="isInitialLoading"
-        class="grid min-h-60 place-items-center"
+        class="order-loading"
       >
-        <div class="size-6 animate-spin rounded-full border-3 border-zinc-300 border-t-zinc-900"></div>
+        <div class="loading-spinner"></div>
       </div>
 
       <AppAlert
@@ -16,19 +16,19 @@
 
       <div
         v-else-if="order"
-        class="space-y-8"
+        class="order-content"
       >
         <header class="order-header">
           <CompanyLogo :config="companyConfig" />
-          <div class="flex flex-wrap items-start justify-between gap-4">
+          <div class="order-heading">
             <div>
-              <div class="flex flex-wrap items-center gap-2">
-                <h1 class="order-number text-2xl font-semibold text-zinc-950">
+              <div class="title-group">
+                <h1 class="order-number page-title">
                   Order #{{ order.identifier ?? order.id }}
                 </h1>
 
                 <span
-                  class="order-status inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold"
+                  class="order-status status-badge"
                   :class="fulfilmentBadgeClass"
                   :title="order.system_order_fulfilment_status?.description"
                 >
@@ -36,14 +36,14 @@
                 </span>
               </div>
 
-              <p class="order-date mt-3 text-sm text-zinc-500">
+              <p class="order-date supporting-text">
                 Date {{ formatDateString(orderDate, false) }}
               </p>
             </div>
 
             <button
               type="button"
-              class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 print-hidden rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
+              class="portal-button portal-button-secondary print-hidden"
               @click="handlePrint"
             >
               <ButtonIcon name="printer" />
@@ -65,7 +65,7 @@
           :description="errorMessage"
         />
 
-        <div class="order-parties grid gap-8 md:grid-cols-2">
+        <div class="order-parties card-grid">
           <OrderPartyCompanyCard
             :company="order.company"
           />
@@ -93,7 +93,7 @@
           :total="order.packages?.length ?? 0"
         />
 
-        <div class="order-totals-section grid gap-8 md:grid-cols-2">
+        <div class="order-totals-section card-grid">
           <OrderTotals :order="order" />
         </div>
 
@@ -103,10 +103,10 @@
           :notes="order.notes"
         />
 
-        <div class="order-actions print-hidden flex justify-end border-t border-zinc-200 pt-6">
+        <div class="order-actions form-actions print-hidden">
           <button
             type="button"
-            class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50"
+            class="portal-button portal-button-secondary"
             @click="handleExit"
           >
             <ButtonIcon name="exit" />
@@ -157,9 +157,9 @@ const orderDate = computed(() => {
 
 const fulfilmentBadgeClass = computed(() => {
   const classes = {
-    1: 'bg-zinc-100 text-zinc-600',
-    2: 'bg-amber-100 text-amber-800',
-    3: 'bg-green-100 text-green-800'
+    1: 'badge-neutral',
+    2: 'badge-warning',
+    3: 'badge-success'
   }
 
   return classes[

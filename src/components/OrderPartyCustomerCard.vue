@@ -1,22 +1,22 @@
 <template>
-  <section class="order-customer portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
-    <div class="border-b border-zinc-200 px-5 py-4">
-      <h2 class="font-semibold text-zinc-950">Customer</h2>
+  <section class="order-customer portal-card">
+    <div class="card-header">
+      <h2 class="section-title">Customer</h2>
     </div>
 
-    <div class="space-y-3 px-5 py-4 text-sm text-zinc-700">
-      <strong v-if="customerName" class="text-zinc-950">{{ customerName }}</strong>
+    <div class="card-body party-details">
+      <strong v-if="customerName" class="party-name">{{ customerName }}</strong>
 
       <div v-if="shipToName || addressLines.length">
         <div v-if="shipToName">{{ shipToName }}</div>
         <div v-for="(line, index) in addressLines" :key="index">{{ line }}</div>
       </div>
 
-      <div v-if="customer?.email" class="text-zinc-500">{{ customer.email }}</div>
-      <div v-if="customer?.phone_number" class="text-zinc-500">
+      <div v-if="customer?.email" class="muted">{{ customer.email }}</div>
+      <div v-if="customer?.phone_number" class="muted">
         Phone: {{ customer.phone_number }}
       </div>
-      <div v-if="customer?.mobile_number" class="text-zinc-500">
+      <div v-if="customer?.mobile_number" class="muted">
         Mobile: {{ customer.mobile_number }}
       </div>
     </div>

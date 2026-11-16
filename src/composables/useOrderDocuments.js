@@ -79,25 +79,25 @@ export function useOrderDocuments(
     const options = {
       approved: {
         label: 'Approved',
-        className: 'bg-green-100 text-green-800'
+        className: 'badge-success'
       },
       missing: {
         label: 'Missing',
-        className: 'bg-red-100 text-red-800'
+        className: 'badge-error'
       },
       rejected: {
         label: 'Rejected',
-        className: 'bg-red-100 text-red-800'
+        className: 'badge-error'
       },
       pending: {
         label: 'Pending',
-        className: 'bg-amber-100 text-amber-800'
+        className: 'badge-warning'
       }
     }
 
     return options[status] ?? {
       label: snakeCaseToTitleCase(status ?? 'unknown'),
-      className: 'bg-zinc-100 text-zinc-600'
+      className: 'badge-neutral'
     }
   }
 

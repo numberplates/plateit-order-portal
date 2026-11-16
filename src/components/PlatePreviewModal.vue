@@ -3,33 +3,32 @@
     :open="open"
     title="Plate Preview"
     :description="modalDescription"
-    content-class="max-h-[calc(100vh-40px)] overflow-auto"
-    backdrop-class="bg-black/60 p-4"
+    content-class="portal-plate-preview"
     @close="emit('close')"
   >
-    <div class="flex min-h-72 flex-1 items-center justify-center overflow-auto bg-zinc-100 p-5 sm:p-8">
+    <div class="plate-preview-stage">
       <div
         v-if="isLoading"
-        class="size-7 animate-spin rounded-full border-3 border-zinc-300 border-t-zinc-900"
+        class="loading-spinner"
       ></div>
 
       <AppAlert
         v-else-if="errorMessage"
         color="error"
         :description="errorMessage"
-        class="w-full max-w-xl"
+        class="preview-error"
       />
 
       <img
         v-else-if="previewUrl"
         :src="previewUrl"
         :alt="getPreviewAlt(currentPlate)"
-        class="max-h-[70vh] max-w-full object-contain"
+        class="plate-preview-image"
       >
 
       <p
         v-else
-        class="text-sm text-zinc-500"
+        class="muted"
       >
         No preview is available for this plate.
       </p>
@@ -37,13 +36,13 @@
 
     <div
       v-if="canNavigate"
-      class="flex items-center justify-between gap-4 border-t border-zinc-200 px-5 py-3"
+      class="plate-preview-navigation"
     >
       <button
         type="button"
         aria-label="Previous plate"
         :disabled="!canSelectPrevious"
-        class="portal-button portal-button-secondary inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-700 shadow hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-40"
+        class="portal-button portal-button-secondary icon-button"
         @click="selectPrevious"
       >
         <ButtonIcon name="chevron-left" />
@@ -53,7 +52,7 @@
         type="button"
         aria-label="Next plate"
         :disabled="!canSelectNext"
-        class="portal-button portal-button-secondary inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-zinc-300 bg-white text-zinc-700 shadow hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-40"
+        class="portal-button portal-button-secondary icon-button"
         @click="selectNext"
       >
         <ButtonIcon name="chevron-right" />

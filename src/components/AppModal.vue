@@ -2,14 +2,14 @@
   <div
     v-if="open"
     :class="[
-      'fixed inset-0 z-50 grid place-items-center',
+      'modal-backdrop',
       backdropClass
     ]"
     @click.self="emit('close')"
   >
     <section
       :class="[
-        'portal-card w-full rounded-xl border border-zinc-200 bg-white shadow-xl',
+        'portal-card modal-panel',
         maxWidth,
         contentClass
       ]"
@@ -18,11 +18,11 @@
       :aria-labelledby="titleId"
       :aria-describedby="description ? descriptionId : undefined"
     >
-      <div class="flex items-start justify-between gap-4 border-b border-zinc-200 px-5 py-4">
+      <div class="modal-header">
         <div>
           <h2
             :id="titleId"
-            class="font-semibold text-zinc-950"
+            class="section-title"
           >
             {{ title }}
           </h2>
@@ -30,7 +30,7 @@
           <p
             v-if="description"
             :id="descriptionId"
-            class="mt-1 text-sm text-zinc-500"
+            class="supporting-text"
           >
             {{ description }}
           </p>
@@ -38,7 +38,7 @@
 
         <button
           type="button"
-          class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm font-semibold text-zinc-700 hover:bg-zinc-50"
+          class="portal-button portal-button-secondary"
           @click="emit('close')"
         >
           <ButtonIcon name="close" />
@@ -70,7 +70,7 @@ const props = defineProps({
   },
   maxWidth: {
     type: String,
-    default: 'max-w-2xl'
+    default: 'modal-standard'
   },
   contentClass: {
     type: String,
@@ -78,7 +78,7 @@ const props = defineProps({
   },
   backdropClass: {
     type: String,
-    default: 'bg-black/50 p-5'
+    default: ''
   }
 })
 

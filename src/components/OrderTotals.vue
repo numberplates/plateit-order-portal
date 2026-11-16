@@ -1,17 +1,17 @@
 <template>
-  <section class="order-totals portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
-    <div class="border-b border-zinc-200 px-5 py-4">
-      <h2 class="font-semibold text-zinc-950">Totals</h2>
+  <section class="order-totals portal-card">
+    <div class="card-header">
+      <h2 class="section-title">Totals</h2>
     </div>
 
-    <div class="space-y-2.5 px-5 py-4">
+    <div class="card-body totals-list">
       <div
         v-for="item in items"
         :key="item.label"
-        class="flex justify-between gap-5 text-sm"
+        class="total-row"
       >
-        <span class="text-zinc-500">{{ item.label }}</span>
-        <strong class="text-right text-zinc-950">{{ item.value }}</strong>
+        <span class="muted">{{ item.label }}</span>
+        <strong class="total-value">{{ item.value }}</strong>
       </div>
     </div>
   </section>

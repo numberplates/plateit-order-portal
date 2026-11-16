@@ -12,7 +12,7 @@ A lightweight Vue 3 + Vite customer order-status and secure document-upload port
 - Document requirement/status display and rejected-document replacement uploads.
 - Browser-side crop and rotate controls using Cropper.js.
 - Image resizing/compression before direct presigned object-storage uploads.
-- Tailwind CSS via the Vite plugin. Production builds include only generated CSS needed by the application rather than shipping the full Tailwind framework.
+- Plain CSS with shared component classes, responsive layouts and print styles; no CSS framework dependency.
 - No customer-side retrieval or preview of previously uploaded sensitive documents.
 
 ## Setup
@@ -104,7 +104,7 @@ Styling lives entirely in CSS. Define shared overrides in optional `config/defau
 
 The cascade applies tracked defaults from `src/style.css`, then shared local CSS, then the active company's CSS. Omitted variables inherit their defaults. Variables control primary buttons, page backgrounds, cards and input focus borders. `--portal-text-color` supplies inherited text colour; use custom CSS for elements with explicit text colours.
 
-When changing companies, the previous custom stylesheet is removed. Local CSS files are Git-ignored and included at build time. Use ordinary CSS; Tailwind directives are not processed in these files. JS configuration handles text, logos and favicons.
+When changing companies, the previous custom stylesheet is removed. Local CSS files are Git-ignored and included at build time. Use ordinary CSS; files are loaded directly without preprocessing. JS configuration handles text, logos and favicons.
 
 Available styling hooks include `.portal`, `.portal-page`, `.portal-login`, `.portal-login-card`, `.portal-order`, `.portal-card`, `.portal-upload-modal`, `.portal-button`, `.portal-button-primary`, `.portal-button-secondary` and `.portal-input`. Theme values are available as CSS variables such as `--portal-primary-color`. Prefix selectors with `.portal` to keep styles within the application:
 
@@ -115,9 +115,13 @@ Available styling hooks include `.portal`, `.portal-page`, `.portal-login`, `.po
 
 The local company 2 example uses `config/companies/2.css` for a wide split login, serif headings and rounded controls. Compare `/c2/status` with company 1's compact monochrome `/c1/status`. On small screens, company 2's login stacks vertically. Copy the ignored files separately to build machines, then rebuild to apply changes.
 
+The app stylesheet (`src/style.css`) uses two cascade layers: `base` for reset/default variables and `components` for shared styles. Company CSS remains unlayered, so overrides take precedence without `!important`. Reusable classes include `.card-header`, `.card-body`, `.card-grid`, `.form-field`, `.form-actions`, `.status-badge` and `.portal-table`. Button, input and presentation hooks retain their existing names. Status colours use `.badge-neutral`, `.badge-warning`, `.badge-success` and `.badge-error`.
+
+Modal class props now accept plain CSS class names: the default width is `.modal-standard`; `.modal-panel` handles scrolling and viewport height. Existing custom CSS that targeted Tailwind utility classes should target the semantic classes instead. The example company styles and packing-slip hooks continue to work.
+
 ## Presentation hooks
 
-Company stylesheets can hide or restyle these classes without depending on Tailwind utilities or element positions. Classes repeat safely across packages; they are not unique HTML IDs. Existing appearance and behaviour stay the same until you add overrides.
+Company stylesheets can hide or restyle these classes without depending on element positions. Classes repeat safely across packages; they are not unique HTML IDs. Existing appearance and behaviour stay the same until you add overrides.
 
 | Area | Classes |
 | --- | --- |

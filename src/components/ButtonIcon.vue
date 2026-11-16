@@ -7,7 +7,7 @@
     stroke-width="1.75"
     stroke-linecap="round"
     stroke-linejoin="round"
-    class="size-4 shrink-0"
+    class="button-icon"
     aria-hidden="true"
     focusable="false"
   >

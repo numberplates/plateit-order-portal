@@ -1,21 +1,21 @@
 <template>
-  <section class="order-documents portal-card rounded-xl border border-zinc-200 bg-white shadow-sm">
-    <div class="flex flex-col gap-3 border-b border-zinc-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+  <section class="order-documents portal-card">
+    <div class="card-header card-header-split">
       <div>
-        <h2 class="font-semibold text-zinc-950">Documents</h2>
-        <div class="mt-1 text-sm text-zinc-500">
+        <h2 class="section-title">Documents</h2>
+        <div class="supporting-text">
           {{ order.system_order_document_status?.description }}
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="status-group">
         <div
           v-if="refreshing"
-          class="size-4 animate-spin rounded-full border-2 border-zinc-300 border-t-zinc-900"
+          class="loading-spinner loading-spinner-small"
         ></div>
 
         <span
-          class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold"
+          class="status-badge"
           :class="badgeClass"
         >
           {{ order.system_order_document_status?.name ?? 'Unknown' }}
@@ -23,18 +23,18 @@
       </div>
     </div>
 
-    <div class="px-5 py-4">
-      <div v-if="tableRows.length" class="overflow-x-auto">
-        <table class="documents-table min-w-[680px] w-full border-collapse text-sm">
+    <div class="card-body">
+      <div v-if="tableRows.length" class="table-scroll">
+        <table class="documents-table portal-table">
           <thead>
-            <tr class="text-left text-zinc-500">
-              <th class="document-action border-b border-zinc-200 px-2.5 py-3 font-semibold">Action</th>
-              <th class="document-type border-b border-zinc-200 px-2.5 py-3 font-semibold">Type</th>
-              <th class="document-reference border-b border-zinc-200 px-2.5 py-3 font-semibold">Reference</th>
-              <th class="document-status border-b border-zinc-200 px-2.5 py-3 font-semibold">Status</th>
+            <tr>
+              <th class="document-action">Action</th>
+              <th class="document-type">Type</th>
+              <th class="document-reference">Reference</th>
+              <th class="document-status">Status</th>
               <th
                 v-if="hasRejectedDocuments"
-                class="document-reason border-b border-zinc-200 px-2.5 py-3 font-semibold"
+                class="document-reason"
               >
                 Reason
               </th>
@@ -43,31 +43,31 @@
 
           <tbody>
             <tr v-for="row in tableRows" :key="row.id">
-              <td class="document-action border-b border-zinc-200 px-2.5 py-3">
+              <td class="document-action">
                 <button
                   v-if="row.isMissing || row.status === 'rejected'"
                   type="button"
-                  class="portal-button portal-button-primary inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-3 py-2 font-semibold text-white transition hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+                  class="portal-button portal-button-primary"
                   :disabled="refreshing"
                   @click="openUpload(row.resource)"
                 >
                   <ButtonIcon name="upload" />
                   {{ row.isMissing ? 'Upload' : 'Replace' }}
                 </button>
-                <span v-else class="text-zinc-400">—</span>
+                <span v-else class="muted">—</span>
               </td>
 
-              <td class="document-type border-b border-zinc-200 px-2.5 py-3">
+              <td class="document-type">
                 <strong>{{ formatDocumentType(row.resource.type) }}</strong>
               </td>
 
-              <td class="document-reference border-b border-zinc-200 px-2.5 py-3 text-zinc-500">
+              <td class="document-reference muted">
                 {{ getDocumentReference(row.resource) }}
               </td>
 
-              <td class="document-status border-b border-zinc-200 px-2.5 py-3">
+              <td class="document-status">
                 <span
-                  class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold"
+                  class="status-badge"
                   :class="getStatusBadge(row.status).className"
                 >
                   {{ getStatusBadge(row.status).label }}
@@ -76,22 +76,22 @@
 
               <td
                 v-if="hasRejectedDocuments"
-                class="document-reason border-b border-zinc-200 px-2.5 py-3"
+                class="document-reason"
               >
                 <span
                   v-if="row.status === 'rejected'"
-                  class="text-red-700"
+                  class="rejection-reason"
                 >
                   {{ formatRejectionReason(row.resource.rejection_reason) }}
                 </span>
-                <span v-else class="text-zinc-400">—</span>
+                <span v-else class="muted">—</span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div v-else class="text-sm text-zinc-500">
+      <div v-else class="muted">
         No documents.
       </div>
     </div>
@@ -162,10 +162,10 @@ const hasRejectedDocuments = computed(() => {
 
 const badgeClass = computed(() => {
   const classes = {
-    1: 'bg-zinc-100 text-zinc-600',
-    2: 'bg-red-100 text-red-800',
-    3: 'bg-amber-100 text-amber-800',
-    4: 'bg-green-100 text-green-800'
+    1: 'badge-neutral',
+    2: 'badge-error',
+    3: 'badge-warning',
+    4: 'badge-success'
   }
 
   return classes[

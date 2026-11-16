@@ -3,20 +3,20 @@
     :open="open"
     :title="title"
     :description="description"
-    content-class="max-h-[calc(100vh-40px)] overflow-auto"
+    content-class="portal-upload-modal"
     @close="emit('close')"
   >
-    <form class="space-y-5 px-5 py-4" @submit.prevent="handleSubmit">
+    <form class="modal-form" @submit.prevent="handleSubmit">
       <div
         v-if="requirement?.registration"
-        class="text-sm text-zinc-700"
+        class="field-context"
       >
         <strong>Registration:</strong>
         {{ requirement.registration }}
       </div>
 
-      <div class="space-y-2">
-        <label class="text-sm font-semibold text-zinc-800">File</label>
+      <div class="form-field">
+        <label class="field-label">File</label>
 
         <DocumentImageEditor
           ref="imageEditor"
@@ -24,10 +24,10 @@
         />
       </div>
 
-      <div class="space-y-2">
+      <div class="form-field">
         <label
           for="document-subtype"
-          class="text-sm font-semibold text-zinc-800"
+          class="field-label"
         >
           Document
         </label>
@@ -35,7 +35,7 @@
         <select
           id="document-subtype"
           v-model="state.subtype"
-          class="portal-input w-full rounded-lg border border-zinc-300 bg-white px-3 py-2.5 outline-none focus:border-zinc-500 focus:ring-2 focus:ring-zinc-200"
+          class="portal-input"
           required
         >
           <option :value="null" disabled>Select document subtype</option>
@@ -55,10 +55,10 @@
         :description="errorMessage"
       />
 
-      <div class="flex justify-end gap-2">
+      <div class="form-actions">
         <button
           type="button"
-          class="portal-button portal-button-secondary inline-flex items-center justify-center gap-2 rounded-lg border border-zinc-300 bg-white px-4 py-2 font-semibold text-zinc-700 hover:bg-zinc-50 disabled:cursor-not-allowed disabled:opacity-50"
+          class="portal-button portal-button-secondary"
           :disabled="isSubmitting"
           @click="emit('close')"
         >
@@ -68,7 +68,7 @@
 
         <button
           type="submit"
-          class="portal-button portal-button-primary inline-flex items-center justify-center gap-2 rounded-lg bg-zinc-900 px-4 py-2 font-semibold text-white hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50"
+          class="portal-button portal-button-primary"
           :disabled="isSubmitting"
         >
           <ButtonIcon name="upload" />
