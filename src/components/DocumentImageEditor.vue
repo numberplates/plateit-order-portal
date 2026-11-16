@@ -117,6 +117,7 @@ const imageElement = ref(null)
 const previewUrl = ref(null)
 
 let cropper = null
+let rotationAnimations = []
 
 const isImage = computed(() => {
   return Boolean(file.value?.type?.startsWith('image/'))
@@ -142,7 +143,7 @@ watch(
 
     cropper = new Cropper(imageElement.value, {
       viewMode: 1,
-      autoCropArea: 1,
+      autoCropArea: 0.9,
       responsive: true,
       background: false,
       movable: true,
@@ -182,13 +183,85 @@ function handleDrop(event) {
 }
 
 /**
- * Rotates the selected image by the given number of degrees.
+ * Rotates a quarter turn, preserving the selected document area and fitting the image.
  *
  * @param {number} degrees
  * @returns {void}
  */
 function rotate(degrees) {
-  cropper?.rotate(degrees)
+  if (!cropper) return
+
+  const container = cropper.getContainerData()
+  if (!container.width || !container.height) return
+
+  stopRotationAnimation()
+  const previousCanvas = cropper.getCanvasData()
+  const previousCropBox = cropper.getCropBoxData()
+  const selection = cropper.getData()
+  const rotatedSelection = degrees > 0
+    ? {
+        x: previousCanvas.naturalHeight - selection.y - selection.height,
+        y: selection.x,
+        width: selection.height,
+        height: selection.width
+      }
+    : {
+        x: selection.y,
+        y: previousCanvas.naturalWidth - selection.x - selection.width,
+        width: selection.height,
+        height: selection.width
+      }
+
+  // The existing crop box otherwise prevents viewMode 1 from zooming out.
+  cropper.clear()
+  cropper.rotate(degrees)
+
+  const canvas = cropper.getCanvasData()
+  const scale = Math.min(
+    container.width / canvas.naturalWidth,
+    container.height / canvas.naturalHeight
+  )
+  const width = canvas.naturalWidth * scale
+  const height = canvas.naturalHeight * scale
+  const left = (container.width - width) / 2
+  const top = (container.height - height) / 2
+
+  cropper.setCanvasData({ left, top, width, height })
+  cropper.crop()
+  cropper.setData(rotatedSelection)
+
+  animateRotation(degrees, previousCanvas, previousCropBox)
+}
+
+/** Animates the image and its crop overlay from their previous orientation. */
+function animateRotation(degrees, previousCanvas, previousCropBox) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+  const canvas = cropper.getCanvasData()
+  const cropBox = cropper.getCropBoxData()
+  const scale = (previousCanvas.width / previousCanvas.naturalWidth)
+    / (canvas.width / canvas.naturalWidth)
+  const stage = imageElement.value?.parentElement
+
+  for (const [selector, previous, current] of [
+    ['.cropper-canvas', previousCanvas, canvas],
+    ['.cropper-crop-box', previousCropBox, cropBox]
+  ]) {
+    const element = stage?.querySelector(selector)
+    if (!element?.animate) continue
+
+    const startLeft = previous.left + previous.width / 2 - current.width / 2
+    const startTop = previous.top + previous.height / 2 - current.height / 2
+    rotationAnimations.push(element.animate([
+      { transform: `translate(${startLeft}px, ${startTop}px) rotate(${-degrees}deg) scale(${scale})` },
+      { transform: `translate(${current.left}px, ${current.top}px) rotate(0deg) scale(1)` }
+    ], { duration: 180, easing: 'ease-out' }))
+  }
+}
+
+function stopRotationAnimation() {
+  rotationAnimations.forEach(animation => animation.cancel())
+  rotationAnimations = []
 }
 
 /**
@@ -197,6 +270,7 @@ function rotate(degrees) {
  * @returns {void}
  */
 function reset() {
+  stopRotationAnimation()
   cropper?.reset()
 }
 
@@ -224,6 +298,7 @@ function getCanvas() {
  * @returns {void}
  */
 function destroyCropper() {
+  stopRotationAnimation()
   cropper?.destroy()
   cropper = null
 }
