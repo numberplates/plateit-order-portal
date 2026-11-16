@@ -1,4 +1,4 @@
-# Order Status Portal
+# Plateit Order Portal
 
 A lightweight Vue 3 + Vite customer order-status and secure document-upload portal for Plateit.
 
