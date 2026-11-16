@@ -3,7 +3,10 @@ const defaults = {
   loginButtonText: 'Access Order',
   loginOrderNumberLabel: 'Order Number',
   loginEmailLabel: 'Email Address',
-  loginDisablePrefilledFields: false,
+  loginRequireConfirmationLink: false,
+  loginMalformedLinkMessage: 'You have followed a malformed link. Please use the complete confirmation link you have been sent.',
+  // Null uses the appropriate default for editable or link-only login.
+  loginExpiryMessage: null,
   loginIntroduction: 'View your order details and use the secure document portal to upload any supporting documents we require.',
   logoUrl: null,
   logoAlt: '',

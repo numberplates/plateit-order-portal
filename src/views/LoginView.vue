@@ -9,7 +9,20 @@
         </p>
       </div>
 
-      <form class="space-y-4 px-6 py-5" @submit.prevent="handleSubmit">
+      <div
+        v-if="isMalformedLink || isExpired"
+        class="space-y-3 px-6 pt-5"
+        :class="{ 'pb-5': !showLoginForm }"
+      >
+        <AppAlert
+          v-if="isMalformedLink && !isExpired"
+          color="error"
+          :description="companyConfig.loginMalformedLinkMessage"
+        />
+        <AppAlert v-if="isExpired" color="error" :description="expiryMessage" />
+      </div>
+
+      <form v-if="showLoginForm" class="space-y-4 px-6 py-5" @submit.prevent="handleSubmit">
         <div class="space-y-1.5">
           <label for="order-id" class="text-sm font-semibold text-zinc-800">{{ companyConfig.loginOrderNumberLabel }}</label>
           <input
@@ -58,7 +71,7 @@
 
 <script setup>
 import ButtonIcon from '../components/ButtonIcon.vue'
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { z } from 'zod'
 import AppAlert from '../components/AppAlert.vue'
@@ -72,10 +85,19 @@ const route = useRoute()
 const router = useRouter()
 const companyId = Number(route.params.companyId)
 const companyConfig = getCompanyConfig(companyId)
-const disableOrderId = companyConfig.loginDisablePrefilledFields === true
+const linkOnlyLogin = companyConfig.loginRequireConfirmationLink === true
+const isMalformedLink = computed(() => linkOnlyLogin && !['order_id', 'email'].every(key =>
+  typeof route.query[key] === 'string' && route.query[key].trim() !== ''
+))
+const isExpired = computed(() => route.query.expired === '1')
+const showLoginForm = computed(() => !isMalformedLink.value && !(linkOnlyLogin && isExpired.value))
+const expiryMessage = companyConfig.loginExpiryMessage ?? (linkOnlyLogin
+  ? 'Access to this page has expired. Please close this page and re-follow your confirmation link to continue.'
+  : 'Access to this page has expired. Please re-enter your order details or re-follow your confirmation link to continue.')
+const disableOrderId = companyConfig.loginRequireConfirmationLink === true
   && typeof route.query.order_id === 'string'
   && route.query.order_id.trim() !== ''
-const disableEmail = companyConfig.loginDisablePrefilledFields === true
+const disableEmail = companyConfig.loginRequireConfirmationLink === true
   && typeof route.query.email === 'string'
   && route.query.email.trim() !== ''
 
@@ -95,11 +117,7 @@ const state = reactive({
 })
 
 const isLoading = ref(false)
-const errorMessage = ref(
-  route.query.expired === '1'
-    ? 'Access to this page has expired. Please re-enter your order details to continue.'
-    : null
-)
+const errorMessage = ref(null)
 
 const schema = z.object({
   order_id: z.number().int().positive(),
@@ -112,6 +130,8 @@ const schema = z.object({
  * @returns {Promise<void>}
  */
 async function handleSubmit() {
+  if (isMalformedLink.value || (linkOnlyLogin && isExpired.value)) return
+
   errorMessage.value = null
 
   const result = schema.safeParse(state)

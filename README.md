@@ -78,7 +78,13 @@ Existing sample company overrides and logos have been moved into these local dir
 
 Configuration changes require a rebuild and redeploy; no API changes are needed. The resulting configuration and logos are public frontend content, even though their source files are Git-ignored; do not include secrets.
 
-Set `loginDisablePrefilledFields: true` in a company's configuration (or `config/defaults.js`) to disable login fields supplied by a link, for example `/c1/status?order_id=1234&email=john%40example.com`. The default is `false`. Each field is locked only when its corresponding query parameter is a single, non-empty string; missing or blank fields remain editable. Values still undergo the existing login validation. Disabled fields are skipped during keyboard navigation. Their values are still validated and submitted from Vue state. This is a presentation setting; it does not change authentication or prevent someone editing the URL.
+Set `loginRequireConfirmationLink: true` in a company's configuration (or `config/defaults.js`) for link-only login, for example `/c1/status?order_id=1234&email=john%40example.com`. Both query parameters must be single, non-empty strings. Missing, blank or repeated parameters show a malformed-link notice instead of the login form. Supplied fields are disabled and skipped during keyboard navigation; their values are still validated and submitted from Vue state. The default is `false`, allowing normal editable login. This setting does not change authentication or prevent someone editing the URL.
+
+When `expired=1` is present, link-only login instructs the user to re-follow their confirmation link and hides the form. Editable login keeps its form and instructs the user to re-enter their order details. The expiry notice takes precedence over the malformed-link notice, since expiry redirects do not include the order number or email parameters.
+
+Optionally set `loginMalformedLinkMessage` in shared or company configuration to replace the malformed-link notice.
+
+Optionally set `loginExpiryMessage: 'Your custom expiry notice'` in shared or company configuration to replace the entire expiry message. Omit it or set it to `null` to use the appropriate default for the login mode.
 
 ## Company styling
 
