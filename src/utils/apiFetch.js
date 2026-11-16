@@ -1,6 +1,6 @@
 import { scopedAuth } from '../stores/scopedAuth'
 
-const apiUrl = import.meta.env.VITE_API_URL
+const apiUrl = import.meta.env.VITE_API_URL || 'https://api.plateit.co.uk'
 
 /**
  * Sends an API request using the scoped bearer token when available.
@@ -20,7 +20,10 @@ export async function apiFetch(path, options = {}) {
     headers.Authorization = `Bearer ${scopedAuth.token.value}`
   }
 
-  const url = new URL(path, apiUrl)
+  // Preserve an optional proxy prefix, e.g. /api/v3/orders rather than /v3/orders.
+  const base = new URL(apiUrl, window.location.origin)
+  base.pathname = `${base.pathname.replace(/\/+$/, '')}/`
+  const url = new URL(path.replace(/^\/+/, ''), base)
 
   if (options.query) {
     appendQuery(url.searchParams, options.query)

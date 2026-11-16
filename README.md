@@ -86,7 +86,7 @@ Optionally set `loginMalformedLinkMessage` in shared or company configuration to
 
 Optionally set `loginExpiryMessage: 'Your custom expiry notice'` in shared or company configuration to replace the entire expiry message. Omit it or set it to `null` to use the appropriate default for the login mode.
 
-## Company styling
+## Company Styling
 
 Styling lives entirely in CSS. Define shared overrides in optional `config/defaults.css` and company-specific overrides in `config/companies/<id>.css`:
 
@@ -119,7 +119,7 @@ The app stylesheet (`src/style.css`) uses two cascade layers: `base` for reset/d
 
 Modal class props now accept plain CSS class names: the default width is `.modal-standard`; `.modal-panel` handles scrolling and viewport height. Existing custom CSS that targeted Tailwind utility classes should target the semantic classes instead. The example company styles and packing-slip hooks continue to work.
 
-## Presentation hooks
+## Presentation Hooks
 
 Company stylesheets can hide or restyle these classes without depending on element positions. Classes repeat safely across packages; they are not unique HTML IDs. Existing appearance and behaviour stay the same until you add overrides.
 
@@ -163,9 +163,22 @@ npm run build
 
 Deploy the generated `dist` directory as a normal SPA and configure your web server to fall back to `index.html` for portal routes.
 
-The API and object-storage CORS policies must allow the hostname from which this portal is served.
+In direct mode, the API and object-storage CORS policies must allow the hostname from which this portal is served.
 
-## Plate previews
+## External Proxies
+
+The portal stays static. Companies that need a CORS workaround can deploy a separate proxy service and configure the frontend before building:
+
+```env
+VITE_API_URL=/api
+VITE_UPLOAD_PROXY_URL=/uploads
+```
+
+`VITE_API_URL` supports an absolute API/proxy base or a same-origin path, including a prefix such as `/api`. `VITE_UPLOAD_PROXY_URL` optionally routes document uploads through an external multipart POST endpoint; leave it blank for direct storage uploads. Both settings are independent. A same-origin proxy avoids CORS requirements; a cross-origin proxy needs its own CORS policy allowing the portal.
+
+The optional proxy will be provided in a separate repository, with its own setup and deployment documentation. No backend is bundled here. Run `npm test` for client routing and upload checks.
+
+## Plate Previews
 
 Number plate registrations in the order package table are clickable. A protected
 `design_preview` path is resolved to a temporary signed URL and displayed in a

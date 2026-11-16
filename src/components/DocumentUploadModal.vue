@@ -86,6 +86,7 @@ import { computed, reactive, ref, watch } from 'vue'
 import AppAlert from './AppAlert.vue'
 import DocumentImageEditor from './DocumentImageEditor.vue'
 import { apiFetch } from '../utils/apiFetch'
+import { uploadFileToStorage } from '../utils/storageUpload'
 import { resolveMessage } from '../utils/resolveMessage'
 import { useDocumentOptions } from '../composables/useDocumentOptions'
 import { useImageProcessor } from '../composables/useImageProcessor'
@@ -233,26 +234,6 @@ async function requestUploadUrl(file) {
       body
     }
   )
-}
-
-/**
- * Uploads the processed image directly to object storage.
- *
- * @param {string} url
- * @param {object} headers
- * @param {File} file
- * @returns {Promise<void>}
- */
-async function uploadFileToStorage(url, headers, file) {
-  const response = await fetch(url, {
-    method: 'PUT',
-    headers,
-    body: file
-  })
-
-  if (!response.ok) {
-    throw new Error(`The file upload failed with status ${response.status}.`)
-  }
 }
 
 /**
