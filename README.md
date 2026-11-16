@@ -186,6 +186,20 @@ Deploy the generated `dist` directory as a normal SPA and configure your web ser
 
 In direct mode, the API and object-storage CORS policies must allow the hostname from which this portal is served.
 
+## Robots and search engines
+
+Optionally discourage crawlers for the entire deployment:
+
+```env
+VITE_BLOCK_ROBOTS=true
+```
+
+Production builds then generate `dist/robots.txt` with `User-agent: *` and `Disallow: /`, and add `<meta name="robots" content="noindex, nofollow">` to the HTML head. The default is `false`, which omits the meta tag and generates an unrestricted robots.txt. Rebuild and deploy both files after changing the setting; restart the development server to update its HTML meta tag. The robots.txt file is generated for production builds, not the development server.
+
+Serve the generated robots.txt at the domain root, before any SPA fallback. Its disallow rule covers the entire origin, so use a dedicated portal hostname if you also host public pages elsewhere. Do not add a conflicting `public/robots.txt`.
+
+These directives rely on crawler cooperation and do not restrict access. Blocking crawling also prevents crawlers reading `noindex`, so previously discovered URLs may still appear in search results. If removing existing listings is the goal, allow crawling while serving a noindex directive, as explained in [Google's noindex guidance](https://developers.google.com/search/docs/crawling-indexing/block-indexing).
+
 ## External Proxies
 
 The portal stays static. Companies that need a CORS workaround can deploy a separate proxy service and configure the frontend before building:
