@@ -301,6 +301,7 @@
     width: 100%;
   }
 
+  .notice-content,
   .not-found-content {
     display: grid;
     gap: 0.75rem;

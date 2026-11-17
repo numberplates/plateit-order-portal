@@ -4,6 +4,7 @@ import App from './App.vue'
 import LoginView from './views/LoginView.vue'
 import OrderStatusView from './views/OrderStatusView.vue'
 import NotFoundView from './views/NotFoundView.vue'
+import HomeView from './views/HomeView.vue'
 import './style.css'
 
 const companyId = import.meta.env.VITE_COMPANY_ID
@@ -11,11 +12,10 @@ const companyId = import.meta.env.VITE_COMPANY_ID
 const routes = [
   {
     path: '/',
-    redirect: () => {
-      return companyId
-        ? `/c${companyId}/status`
-        : '/404'
-    }
+    name: 'home',
+    ...(companyId
+      ? { redirect: `/c${companyId}/status` }
+      : { component: HomeView })
   },
   {
     path: '/c:companyId/status',

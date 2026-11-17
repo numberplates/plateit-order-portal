@@ -34,6 +34,18 @@ VITE_COMPANY_ID=123
 
 `VITE_COMPANY_ID` is only used for the convenient `/` redirect. Production links can go directly to `/c123/status`.
 
+When `VITE_COMPANY_ID` is omitted or blank, `/` displays a simple notice directing customers to their confirmation link. Customise it in `overrides/shared/config.js`:
+
+```js
+export default {
+  homeTitle: 'Welcome to our order portal',
+  homeMessage: 'Please use the link in your order confirmation email to continue.'
+}
+```
+
+This page uses shared branding (including the logo and favicon) and the `.portal-home` and `.portal-home-card` CSS hooks. Text is rendered as plain text. Unknown routes still show the not-found page. Rebuild after changing overrides.
+
+
 ## Company Configuration
 
 Local overrides use this optional structure, relative to the application root:
@@ -183,6 +195,11 @@ npm run build
 ```
 
 Deploy the generated `dist` directory as a normal SPA and configure your web server to fall back to `index.html` for portal routes.
+
+`nginx.example.conf` serves the app for recognised portal routes and preserves HTTP 404 for unknown URLs. `/assets/` contains Vite-generated JavaScript and CSS; `/company-assets/` contains local branding. Missing files in either directory return HTTP 404.
+
+Unknown page URLs display Vue's not-found page with HTTP 404. Keep the valid-route regex in sync with `src/main.js`. The HTML entry point is revalidated, hashed bundles are cached for one year, and company assets for one hour. Client-side navigation within an already-loaded app does not create a new document response; Vue cannot change the original HTTP status.
+
 
 In direct mode, the API and object-storage CORS policies must allow the hostname from which this portal is served.
 

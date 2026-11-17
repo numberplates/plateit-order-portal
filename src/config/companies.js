@@ -1,13 +1,15 @@
 const defaults = {
+  homeTitle: 'Number Plate Order Portal',
+  homeMessage: 'Please follow the confirmation link you have been sent to access your order.',
   loginTitle: 'Access Your Order',
   loginButtonText: 'Access Order',
   loginOrderNumberLabel: 'Order Number',
   loginEmailLabel: 'Email Address',
   loginRequireConfirmationLink: false,
-  loginMalformedLinkMessage: 'You have followed a malformed link. Please use the complete confirmation link you have been sent.',
+  loginMalformedLinkMessage: 'This link is broken. Please use the complete confirmation link you have been sent.',
   // Null uses the appropriate default for editable or link-only login.
   loginExpiryMessage: null,
-  loginIntroduction: 'View your order details and use the secure document portal to upload any supporting documents we require.',
+  loginIntroduction: 'Check the status of your order and, if required, upload supporting documents through our secure document portal.',
   logoUrl: null,
   logoAlt: '',
   faviconUrl: '/favicon.svg'
