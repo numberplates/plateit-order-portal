@@ -31,7 +31,6 @@
             :disabled="disableOrderId"
             class="portal-input"
             type="text"
-            placeholder="Enter your order ID"
             required
           />
         </div>
@@ -44,7 +43,6 @@
             :disabled="disableEmail"
             class="portal-input"
             type="email"
-            placeholder="you@example.com"
             required
           />
         </div>

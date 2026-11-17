@@ -8,7 +8,7 @@
     </div>
 
     <div class="card-body notes-list">
-      <article
+      <div
         v-for="note in publicNotes"
         :key="note.id"
         class="order-note"
@@ -22,7 +22,7 @@
         <div class="note-meta">
           {{ getAuthorName(note) }} · {{ formatDateString(note.created_at) }}
         </div>
-      </article>
+      </div>
     </div>
   </section>
 </template>
