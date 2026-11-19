@@ -310,6 +310,7 @@
     border: 1px solid;
     border-radius: 0.6rem;
     font-size: 0.9rem;
+    text-align: center;
   }
 
   .alert-error {
